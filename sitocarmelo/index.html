@@ -1,0 +1,1555 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="In un mondo di rumore, crea musica che abbia un significato.">
+  <title>Romano Studios — Lezioni e servizi musicali</title>
+  <style>
+    @font-face{font-family:Pilat;src:url("https://fonts.output.com/Pilat-Book.woff2") format("woff2");font-weight:400;font-display:swap}
+    @font-face{font-family:Pilat;src:url("https://fonts.output.com/Pilat-Demi.woff2") format("woff2");font-weight:500 700;font-display:swap}
+    @font-face{font-family:PilatWideBlack;src:url("https://fonts.output.com/PilatWide-Black.woff2") format("woff2");font-weight:900;font-display:swap}
+    :root{--nero:#0d0e0f;--crema:#f1e7d1;--acid:#e5ff00;--linea-titolo:144px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-width:320px;overflow-x:hidden;background:var(--crema);color:#000;font-family:Pilat,Arial,sans-serif;font-weight:500}
+    body.is-loading{height:100vh;overflow:hidden}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    a,button,[role="button"]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    .preloader{position:fixed;z-index:9999;inset:0;overflow:hidden;background:#f4f4f4;transition:background-color .9s ease,opacity .7s ease,visibility .7s ease}
+    .preloader.is-aligning{background:#f4f4f400}
+    .preloader.is-finished{visibility:hidden;opacity:0;pointer-events:none}
+    .preloader-word{position:absolute;z-index:1;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:clamp(38px,5.2vw,74px);font-weight:600;letter-spacing:-2.6px;line-height:1;white-space:nowrap;transition:opacity .35s ease}
+    .preloader-mosaic{position:absolute;z-index:2;top:50%;left:50%;width:322px;height:228px;overflow:hidden;transform:translate(-50%,-50%);border-radius:24px;background:#dedede;box-shadow:0 18px 50px #0002;transition:opacity .3s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+    .preloader-track{width:100%;height:300%;transform:translateY(0);transition:transform .5s cubic-bezier(.76,0,.24,1);will-change:transform}
+    .preloader-page{width:100%;height:33.3334%;overflow:hidden}
+    .preloader-page img{display:block;width:100%;height:100%;object-fit:cover}
+    .preloader-final{position:absolute;z-index:3;overflow:hidden;border-radius:24px;opacity:0;box-shadow:0 24px 60px #0002;transition:left .8s cubic-bezier(.76,0,.24,1),top .8s cubic-bezier(.76,0,.24,1),width .8s cubic-bezier(.76,0,.24,1),height .8s cubic-bezier(.76,0,.24,1),border-radius .8s cubic-bezier(.76,0,.24,1),opacity .2s ease,box-shadow .65s ease}
+    .preloader-final.is-visible{opacity:1}
+    .preloader-final img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+    .preloader.is-aligning .preloader-word,.preloader.is-aligning .preloader-mosaic{opacity:0}
+    .preloader.is-aligned .preloader-final{box-shadow:none}
+    .preloader-noise{position:absolute;z-index:4;inset:-50%;pointer-events:none;background:repeating-radial-gradient(circle at center,#000 0 .6px,transparent .7px 3px);mix-blend-mode:multiply;opacity:.035;animation:noise-animation .22s steps(2) infinite;transition:opacity .3s ease}
+    .preloader.is-aligning .preloader-noise{opacity:0}
+    .landing-step{opacity:0;transform:translateY(30px);animation:none!important;transition:opacity .58s ease,transform .68s cubic-bezier(.2,.8,.2,1)}
+    body.site-ready .landing-step{opacity:1;transform:translateY(0);transition-delay:var(--step-delay,0ms)}
+    @keyframes noise-animation{0%{transform:translate(0,0)}10%{transform:translate(-2%,-3%)}20%{transform:translate(-4%,2%)}30%{transform:translate(2%,-4%)}40%{transform:translate(-2%,5%)}50%{transform:translate(-4%,2%)}60%{transform:translate(3%,0)}70%{transform:translate(0,3%)}80%{transform:translate(-3%,0)}90%{transform:translate(2%,2%)}100%{transform:translate(1%,0)}}
+    .action-loader{position:fixed;z-index:9900;inset:0;display:flex;visibility:hidden;align-items:center;justify-content:center;padding:20px;background:#f4f4f4f2;opacity:0;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:opacity .28s ease,visibility .28s ease}
+    .action-loader.is-visible{visibility:visible;opacity:1}
+    .action-loader-content{text-align:center;transform:translateY(15px) scale(.97);transition:transform .38s cubic-bezier(.2,.8,.2,1)}.action-loader.is-visible .action-loader-content{transform:translateY(0) scale(1)}
+    .action-loader-brand{margin:0 0 17px;font-size:22px;font-weight:600;letter-spacing:-1px}
+    .action-loader-window{width:300px;height:212px;overflow:hidden;border-radius:24px;background:#ddd;box-shadow:0 20px 55px #0003}
+    .action-loader-track{width:100%;height:300%;animation:action-loader-pages 1.55s cubic-bezier(.76,0,.24,1) both}
+    .action-loader-page{width:100%;height:33.3334%;overflow:hidden}.action-loader-page img{display:block;width:100%;height:100%;object-fit:cover}
+    .action-loader-text{margin:18px 0 0;color:#4d4942;font-size:14px;font-weight:600}
+    .action-loader-progress{width:150px;height:3px;overflow:hidden;margin:13px auto 0;border-radius:10px;background:#00000012}.action-loader-progress::after{display:block;width:45%;height:100%;border-radius:inherit;background:var(--nero);content:"";animation:action-loader-bar .75s ease-in-out infinite alternate}
+    @keyframes action-loader-pages{0%,27%{transform:translateY(0)}38%,62%{transform:translateY(-33.3333%)}73%,100%{transform:translateY(-66.6667%)}}
+    @keyframes action-loader-bar{from{transform:translateX(-110%)}to{transform:translateX(230%)}}
+    .promo{display:flex;height:64px;align-items:center;justify-content:center;background:var(--nero);color:var(--crema);animation:entra-giu .65s ease both}
+    .promo-inner{display:flex;align-items:center;gap:12px;font-size:14px;line-height:19px}
+    .promo-art{width:56px;height:40px;border-radius:5px;background:url("dj.png") center 48%/cover no-repeat;box-shadow:inset 0 0 0 1px #ffffff30}
+    .promo strong,.promo span{display:block}
+    .promo span{color:var(--acid)}
+    .container{width:min(100%,1440px);margin:auto;padding-inline:48px}
+    header{height:68px;animation:entra-giu .7s .08s ease both}
+    body>header{position:sticky;z-index:700;top:0;background:var(--crema);transition:background-color .35s ease}
+    body>header .nav{transition:height .38s cubic-bezier(.2,.8,.2,1),margin .38s cubic-bezier(.2,.8,.2,1),background-color .38s ease,border-color .38s ease,box-shadow .38s ease,backdrop-filter .38s ease}
+    body>header.is-liquid{background:transparent}
+    body>header.is-liquid .nav{height:58px;margin-top:5px;border:1px solid #ffffff91;border-radius:22px;background:linear-gradient(135deg,#fff8,#eee3c8a8);box-shadow:0 14px 35px #342d2030,inset 0 1px 0 #fff,inset 0 -1px 0 #ffffff4d;-webkit-backdrop-filter:blur(22px) saturate(165%);backdrop-filter:blur(22px) saturate(165%)}
+    .nav{position:relative;display:flex;height:100%;align-items:center;justify-content:space-between}
+    .logo{font-size:19px;font-weight:600;letter-spacing:-.8px;white-space:nowrap}
+    nav{position:absolute;left:50%;display:flex;gap:38px;transform:translateX(-50%);font-weight:600}
+    nav a,.actions a{transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s ease}
+    nav a:hover,.actions a:hover{transform:translateY(-2px);opacity:.72}
+    .mobile-nav-cta,.mobile-nav-email,.mobile-nav-separator,.mobile-nav-login{display:none}
+    .actions{display:flex;gap:8px;align-items:center}
+    .login,.button{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;font-weight:600}
+    .login{height:40px;padding:0 16px;background:#0000000c}
+    .button{min-height:40px;padding:10px 17px;background:var(--acid);color:var(--nero);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease}
+    .button:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 10px 26px #0003}
+    .menu{position:relative;display:none;width:40px;height:40px;padding:0;border:0;background:transparent;cursor:pointer}
+    .menu::before,.menu::after{position:absolute;left:9px;width:21px;height:2px;background:var(--nero);content:"";transition:top .25s ease,transform .25s ease}
+    .menu::before{top:13px}.menu::after{top:23px}
+    .mobile-open .menu::before{top:18px;transform:rotate(45deg)}.mobile-open .menu::after{top:18px;transform:rotate(-45deg)}
+    body.menu-open,body.support-open,body.login-open{overflow:hidden}
+    body.menu-open::before{position:fixed;z-index:650;inset:0;background:#0d0e0f70;content:"";-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);animation:menu-overlay .3s ease both}
+    .hero-wrap{height:600px}
+    .hero{position:relative;isolation:isolate;display:flex;height:100%;align-items:center;justify-content:center;overflow:hidden;flex-direction:column;padding:100px 24px;border-radius:52px;background:#151515}
+    .slider,.slider::after{position:absolute;inset:0}
+    .slider{z-index:-2;overflow:hidden;opacity:0;transition:opacity .38s ease}
+    body.site-ready .slider{opacity:1}
+    .slider::after{z-index:4;background:linear-gradient(#0005,#0005);content:""}
+    .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:translateX(6%) scale(1.03);transition:opacity .9s ease,transform 1.15s cubic-bezier(.2,.8,.2,1);will-change:opacity,transform}
+    .slide.is-active{z-index:2;opacity:1;transform:translateX(0) scale(1.045)}
+    .slide.was-active{z-index:1;opacity:0;transform:translateX(-6%) scale(1.02)}
+    .slider-dots{display:none}
+    .slider-dot{width:24px;height:3px;border:0;border-radius:10px;background:#ffffff60;transition:width .35s ease,background .35s ease}
+    .slider-dot.is-active{width:40px;background:var(--acid)}
+    h1{position:relative;z-index:6;max-width:900px;margin:0 0 32px;color:var(--crema);font-size:72px;font-weight:600;letter-spacing:-1.5px;line-height:1;text-align:center;animation:hero-testo .85s .25s cubic-bezier(.2,.8,.2,1) both}
+    h1 span{display:block;white-space:nowrap}
+    h1 em,.accent{color:var(--acid);font-style:normal}
+    .hero .button{position:relative;z-index:6;min-height:48px;padding:14px 24px;border-radius:16px;animation:hero-testo .85s .38s cubic-bezier(.2,.8,.2,1) both}
+    .intro{padding-top:40px;padding-bottom:80px}
+    h2{margin:0 0 40px;font-family:PilatWideBlack,Arial Black,sans-serif;font-size:144px;font-weight:900;letter-spacing:-5px;line-height:var(--linea-titolo)}
+    .parola-mobile{display:block;height:var(--linea-titolo);overflow:hidden}
+    .parole{display:flex;flex-direction:column;animation:scorri-su 4.8s cubic-bezier(.76,0,.24,1) infinite;will-change:transform}
+    .parole span{height:var(--linea-titolo);flex:0 0 var(--linea-titolo)}
+    .artisti{display:block}
+    @keyframes scorri-su{0%,34%{transform:translateY(0)}48%,82%{transform:translateY(calc(-1 * var(--linea-titolo)))}96%,100%{transform:translateY(calc(-2 * var(--linea-titolo)))}}
+    .descrizione{margin:0 0 50px;font-size:20px;line-height:1.4}
+    .griglia{display:grid;margin:0;padding:0;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px;font-size:23px;font-weight:600}
+    .artist-column{margin:0;padding:0;list-style:none}.artist-column li{min-height:1.35em;line-height:1.35}.artist-you{width:100%;padding:0 6px;background:var(--nero);color:var(--acid)}
+    .reveal{opacity:0;transform:translateY(34px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+    .reveal.is-visible{opacity:1;transform:translateY(0)}
+    .griglia li{transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s ease}.griglia li:hover{transform:translateX(7px);opacity:.65}.griglia .artist-you:hover{opacity:1}
+    .ignite-section{position:relative;width:min(100%,1440px);margin:auto;overflow:hidden;padding:62px 48px 88px;background:var(--crema);scroll-margin-top:84px;text-align:center}
+    .ignite-rays{position:absolute;z-index:0;top:-65px;left:50%;width:min(1180px,88vw);height:390px;transform:translateX(-50%);background:repeating-conic-gradient(from 88deg at 50% 46%,transparent 0 4.4deg,#6e675912 4.55deg 4.72deg);opacity:.75;mask-image:radial-gradient(ellipse at center,#000 0 28%,transparent 72%)}
+    .ignite-heading{position:relative;z-index:1}
+    .ignite-title{margin:0;font-size:76px;font-weight:600;letter-spacing:-3.5px;line-height:.94}
+    .ignite-title span{display:block}
+    .ignite-subtitle{margin:18px 0 0;font-size:20px;line-height:1.3}
+    .product-showcase{position:relative;z-index:1;margin:54px auto 0;padding:8px 8px 34px;border-radius:44px;background:#e4dac4;text-align:left;transition:transform .65s cubic-bezier(.2,.8,.2,1),box-shadow .65s ease}
+    .product-showcase:hover{transform:translateY(-6px);box-shadow:0 30px 70px #4c45351f}
+    .product-stage{position:relative;display:flex;height:380px;align-items:center;justify-content:center;overflow:hidden;border-radius:36px;background:radial-gradient(circle at 50% 48%,#f0ede8 0 8%,#d7d1c6 29%,transparent 58%),linear-gradient(115deg,#aaa493,#d3cec2 48%,#9f9a8b);box-shadow:inset 0 0 80px #49443938}
+    .product-stage::before,.product-stage::after{position:absolute;width:260px;height:260px;border-radius:50%;background:#f2ede3;filter:blur(55px);content:"";opacity:.38}
+    .product-stage::before{top:-80px;left:14%}.product-stage::after{right:12%;bottom:-110px}
+    .coapp{position:relative;z-index:2;display:grid;width:230px;height:344px;grid-template-columns:1fr 64px;grid-template-rows:48px 146px 1fr;overflow:hidden;border-radius:8px;background:#c8c8c8;box-shadow:0 24px 45px #0005;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+    .product-showcase:hover .coapp{transform:translateY(-4px) rotate(.35deg)}
+    .coapp-brand{grid-column:1/-1;padding:10px 10px 0;font-size:8px;font-weight:600;line-height:.85}
+    .knob-zone{display:flex;grid-column:1/-1;align-items:center;justify-content:center}
+    .knob{position:relative;width:88px;height:88px;border-radius:50%;background:repeating-conic-gradient(#eee 0 7deg,#bcbcbc 7deg 13deg);box-shadow:0 12px 16px #0003,inset 0 0 0 16px #d8d8d8;animation:knob-vive 5s ease-in-out infinite}
+    .knob::before{position:absolute;inset:18px;border-radius:50%;background:#dbd9d3;box-shadow:inset 0 0 15px #fff,0 3px 7px #0003;content:""}
+    .knob::after{position:absolute;top:10px;left:42px;width:4px;height:15px;border-radius:4px;background:#ef6f00;content:""}
+    .co-form{margin:0 7px 8px;padding:10px 9px;border-radius:4px;background:#bdbdbd;color:#555;font-size:8px;line-height:1.4}
+    .co-form strong{display:block;margin-bottom:18px;color:#111;font-size:9px}
+    .co-form span{display:block;height:3px;margin-top:6px;border-radius:5px;background:#a9a9a9}
+    .co-action{position:relative;margin:0 7px 8px 0;padding:10px 7px;border-radius:4px;background:linear-gradient(#f78c24,#e96700);color:#111;font-size:8px;font-weight:600;line-height:1.1}
+    .co-action::after{position:absolute;right:8px;bottom:7px;font-size:23px;content:"↳"}
+    .ignite-explore{position:absolute;z-index:4;top:50%;left:50%;display:flex;min-width:110px;height:50px;align-items:center;justify-content:center;transform:translate(-50%,-50%);border-radius:28px;background:var(--acid);font-size:17px;font-weight:600;box-shadow:0 12px 30px #0003;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease}
+    .ignite-explore:hover{transform:translate(-50%,-55%) scale(1.06);box-shadow:0 16px 34px #0004}
+    .product-details{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;padding:24px 10px 0}
+    .product-copy{text-align:left}
+    .product-eyebrow{margin:0 0 2px;font-size:11px;font-weight:600;line-height:1}
+    .product-name{margin:0;font-size:34px;font-weight:600;letter-spacing:-1.5px;line-height:1}
+    .product-description{margin:8px 0 0;font-size:16px;line-height:1.35}
+    .product-tags{display:flex;flex:0 0 auto;gap:8px;padding-bottom:36px}
+    .product-tag{padding:5px 12px;border-radius:20px;background:#989388;color:white;font-size:11px;font-weight:600;line-height:1}
+    .product-tag.new{background:#0d0e0f}
+    .arcade-mobile-card{display:none}
+    .duo-section{width:min(100%,1440px);margin:auto;padding:0 48px 92px}
+    .duo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+    .duo-card{padding:8px 8px 34px;border-radius:44px;background:#e4dac4;transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s ease}
+    .duo-card:hover{transform:translateY(-7px);box-shadow:0 28px 60px #4d46361b}
+    .duo-stage{display:flex;height:370px;align-items:center;justify-content:center;overflow:hidden;border-radius:36px;background:radial-gradient(circle at 50% 43%,#eee9df 0 15%,#d6cebe 50%,#a8a293 100%);box-shadow:inset 0 0 55px #635d5025}
+    .duo-arcade-ui{position:relative;width:82%;height:72%;overflow:hidden;border-radius:6px;background:#151515;color:#ddd;box-shadow:0 22px 42px #0005;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+    .duo-card:hover .duo-arcade-ui,.duo-card:hover .duo-portal-ui{transform:translateY(-4px) scale(1.012)}
+    .duo-toolbar{display:flex;height:29px;align-items:center;gap:8px;padding:0 10px 0 34px;border-bottom:1px solid #ffffff12;background:#202020;font-size:7px}
+    .duo-toolbar i{width:7px;height:7px;border-radius:50%;background:#555}.duo-toolbar b{font-size:8px}.duo-toolbar span{margin-left:auto;color:#777}
+    .duo-side{position:absolute;top:29px;bottom:0;left:0;width:27px;border-right:1px solid #ffffff12;background:#101010}.duo-side::before{display:block;width:3px;height:34px;margin-top:9px;background:var(--acid);content:""}
+    .duo-samples{display:grid;height:calc(100% - 29px);margin-left:27px;padding:13px 11px 9px;grid-template-columns:repeat(4,1fr);gap:12px}
+    .duo-sample{min-width:0}.duo-cover{display:block;height:108px;border-radius:4px;background:linear-gradient(145deg,#172438,#020305);box-shadow:inset 0 0 22px #0005}
+    .duo-sample:nth-child(2) .duo-cover{background:radial-gradient(circle at 50% 46%,transparent 0 23%,#704536 24% 26%,transparent 27%),linear-gradient(135deg,#e6a585,#efc5b0)}
+    .duo-sample:nth-child(3) .duo-cover{background:repeating-radial-gradient(circle,#222 0 1px,#d8d8d8 2px 7px)}
+    .duo-sample:nth-child(4) .duo-cover{background:radial-gradient(circle,#4cff4b 0 7%,transparent 8%),conic-gradient(#6b00ff,#ff00d0,#6b00ff)}
+    .duo-sample:nth-child(5) .duo-cover{background:linear-gradient(145deg,#06bec8,#0a3040)}.duo-sample:nth-child(6) .duo-cover{background:linear-gradient(145deg,#ffd63c,#a16b00)}.duo-sample:nth-child(7) .duo-cover{background:radial-gradient(circle,#777,#111 65%)}.duo-sample:nth-child(8) .duo-cover{background:linear-gradient(145deg,#ff6300,#6e1c00)}
+    .duo-sample b{display:block;overflow:hidden;margin-top:5px;color:#eee;font-size:7px;white-space:nowrap}.duo-sample small{display:block;overflow:hidden;margin-top:2px;color:#777;font-size:5px;white-space:nowrap}
+    .duo-portal-ui{display:flex;width:84%;height:72%;overflow:hidden;border-radius:10px;background:#0c0d10;box-shadow:0 22px 42px #0005;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+    .portal-main{position:relative;display:flex;flex:1;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 50%,#101b22,#090a0e 65%)}
+    .portal-logo{position:absolute;top:24px;left:30px;color:white;font-size:15px;letter-spacing:5px}.portal-ring{position:relative;width:230px;height:230px;border:2px solid #5bd8ed;border-radius:50%;background:repeating-conic-gradient(from 8deg,#8aedff33 0 .7deg,transparent .8deg 8deg);box-shadow:0 0 22px #653bff55,inset 0 0 24px #00d9ff1c}
+    .portal-ring::before{position:absolute;inset:47%;border-radius:50%;background:#d9ffff;box-shadow:0 0 8px #6cf,28px -12px 0 -2px #6cf,-38px 20px 0 -3px #83e5ff,12px 47px 0 -3px #6cf,-56px -34px 0 -3px #8bf;content:""}
+    .portal-controls{width:105px;padding:22px 16px;background:linear-gradient(#292a2d,#1a1b1e);color:#9c86ff;text-align:center}.portal-controls b{display:block;margin-bottom:17px;font-size:7px;letter-spacing:2px}.portal-knob{display:block;width:48px;height:48px;margin:0 auto 27px;border:7px solid #4c4d51;border-radius:50%;background:radial-gradient(circle,#6c6d70 0 28%,#151619 30% 100%);box-shadow:0 0 0 2px #8d72ff}.portal-knob.cyan{box-shadow:0 0 0 2px #53e3e9}.portal-meter{display:block;height:58px;margin-top:8px;border-radius:3px;background:repeating-linear-gradient(90deg,#242529 0 6px,#444 7px 8px)}
+    .duo-info{padding:24px 12px 0}.duo-head{display:flex;align-items:flex-end;justify-content:space-between;gap:15px}.duo-eyebrow{margin:0;font-size:11px;font-weight:600;line-height:1}.duo-title{margin:3px 0 0;font-size:36px;font-weight:600;letter-spacing:-1.7px;line-height:.92}.duo-tag{flex:0 0 auto;padding:6px 12px;border-radius:18px;background:#99948a;color:white;font-size:11px;line-height:1}.duo-description{margin:12px 0 0;font-size:16px;line-height:1.4}.duo-cta{display:none}
+    .react-card{--rotate-x:0deg;--rotate-y:0deg;--shine-x:50%;--shine-y:50%;position:relative;isolation:isolate;overflow:hidden;transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y));transform-style:preserve-3d;will-change:transform;transition:transform .48s cubic-bezier(.2,.8,.2,1),box-shadow .48s ease}
+    .landing-step.react-card{transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(30px)}
+    body.site-ready .landing-step.react-card{transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(0)}
+    body.site-ready .landing-step.react-card:hover{transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(-7px)}
+    .react-card::after{position:absolute;z-index:8;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--shine-x) var(--shine-y),#ffffff42,transparent 30%);content:"";opacity:0;pointer-events:none;transition:opacity .25s ease}
+    .react-card.is-reacting{box-shadow:0 34px 75px #342f2550;transition-duration:.12s}
+    .react-card.is-reacting::after{opacity:1}
+    .card-media{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.002);transition:transform .85s cubic-bezier(.2,.8,.2,1),filter .5s ease}
+    .react-card:hover .card-media{transform:scale(1.085);filter:saturate(1.08) contrast(1.04)}
+    .product-stage>.card-media,.arcade-preview>.card-media,.duo-stage>.card-media{position:absolute;inset:0}
+    .product-stage,.arcade-preview,.duo-stage{position:relative}
+    .video-audio-toggle{position:absolute;z-index:7;right:17px;bottom:17px;display:flex;height:46px;align-items:center;gap:9px;padding:0 15px;border:1px solid #ffffff35;border-radius:15px;background:#0d0e0fd6;color:white;cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 10px 28px #0005;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);transition:transform .25s ease,background-color .25s ease}
+    .video-audio-toggle:hover{transform:translateY(-2px);background:#0d0e0ff2}.video-audio-toggle:active{transform:scale(.97)}
+    .video-sound-icon{font-size:18px;line-height:1}.video-audio-toggle.is-audible{border-color:var(--acid);background:var(--acid);color:var(--nero)}
+    @keyframes media-breathe{from{transform:scale(1.01)}to{transform:scale(1.08)}}
+    body.site-ready .scroll-react{opacity:0;filter:blur(10px);transform:translateY(58px) scale(.975);transition:opacity .6s ease,transform .72s cubic-bezier(.2,.8,.2,1),filter .6s ease;transition-delay:var(--scroll-delay,0ms)}
+    body.site-ready .scroll-react.is-in-view{opacity:1;filter:blur(0);transform:translateY(0) scale(1)}
+    body.site-ready .scroll-react.react-card{transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(58px) scale(.975)}
+    body.site-ready .scroll-react.react-card.is-in-view{transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(0) scale(1)}
+    body.site-ready .scroll-react.react-card.is-in-view:hover{transform:perspective(1100px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y)) translateY(-7px) scale(1)}
+    .booking-section{width:min(100%,1440px);margin:auto;padding:0 48px 110px}
+    .booking-shell{position:relative;isolation:isolate;display:grid;overflow:hidden;padding:54px;border-radius:44px;background:#e4dac4;color:var(--nero);grid-template-columns:minmax(0,.82fr) minmax(460px,1.18fr);gap:48px}
+    .booking-shell::before,.booking-shell::after{display:none}
+    .booking-intro{align-self:center}
+    .booking-kicker{margin:0 0 20px;color:#726b5f;font-size:13px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase}
+    .booking-title{max-width:570px;margin:0;font-family:Pilat,Arial,sans-serif;font-size:clamp(52px,4.8vw,72px);font-weight:600;letter-spacing:-3px;line-height:.94}
+    .booking-copy{max-width:520px;margin:27px 0 0;color:#3e3a34;font-size:18px;line-height:1.45}
+    .booking-form{padding:32px;border:1px solid #cfc3ad;border-radius:34px;background:#f1e7d1;box-shadow:0 18px 45px #635b4b12}
+    .booking-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .booking-field-full{grid-column:1/-1}
+    .booking-field{display:flex;flex-direction:column;gap:9px}
+    .booking-field label,.booking-options legend{padding:0;color:#3c3933;font-size:13px;font-weight:600;letter-spacing:.2px}
+    .booking-field input,.booking-field textarea{width:100%;padding:0 17px;border:1px solid #cfc3ad;border-radius:16px;outline:none;background:#faf2e2;color:var(--nero);font:inherit;transition:border-color .25s ease,background-color .25s ease,box-shadow .25s ease}
+    .booking-field input{height:56px}.booking-field textarea{min-height:112px;padding-block:15px;resize:vertical;line-height:1.4}
+    .booking-field input::placeholder,.booking-field textarea::placeholder{color:#756f65}
+    .booking-field input:focus,.booking-field textarea:focus{border-color:#8d9950;background:#fff9ed;box-shadow:0 0 0 4px #e5ff0024}
+    .booking-optional{color:#7a7266;font-weight:400}
+    .booking-options{margin:25px 0 0;padding:0;border:0}
+    .booking-choice-grid{display:grid;margin-top:11px;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .booking-choice{position:relative;cursor:pointer}
+    .booking-choice input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+    .booking-choice span{position:relative;display:flex;min-height:84px;justify-content:center;flex-direction:column;padding:15px 46px 15px 17px;border:1px solid #cfc3ad;border-radius:18px;background:#e9ddc7;transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s ease,background-color .25s ease,color .25s ease}
+    .booking-choice span::after{position:absolute;top:50%;right:17px;width:18px;height:18px;transform:translateY(-50%);border:2px solid #777064;border-radius:50%;content:"";box-shadow:inset 0 0 0 4px #e9ddc7;transition:background-color .25s ease,border-color .25s ease,box-shadow .25s ease}
+    .booking-choice b{font-size:16px;font-weight:600}.booking-choice small{margin-top:5px;color:#6e675c;font-size:12px;line-height:1.2}
+    .booking-choice:hover span{transform:translateY(-2px);border-color:#a99e89;background:#eee3cf}
+    .booking-choice input:focus-visible+span{outline:3px solid #e5ff0066;outline-offset:3px}
+    .booking-choice input:checked+span{border-color:var(--acid);background:#e5ff00;color:var(--nero)}
+    .booking-choice input:checked+span::after{border-color:var(--nero);background:var(--nero);box-shadow:inset 0 0 0 4px var(--acid)}
+    .booking-choice input:checked+span small{color:#0d0e0fa8}
+    .booking-submit{display:flex;width:100%;height:60px;align-items:center;justify-content:center;margin-top:26px;border:0;border-radius:18px;background:var(--acid);color:var(--nero);cursor:pointer;font-size:18px;font-weight:600;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease}
+    .booking-submit:hover{transform:translateY(-3px);box-shadow:0 15px 34px #e5ff0029}
+    .booking-submit:active{transform:scale(.985)}
+    .booking-status{display:none;margin:18px 0 0;padding:15px 17px;border:1px solid #aabb3b;border-radius:15px;background:#e5ff0038;color:var(--nero);font-size:14px;line-height:1.4}
+    .booking-status.is-visible{display:block;animation:hero-testo .45s cubic-bezier(.2,.8,.2,1) both}
+    .booking-status a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+    .whats-new-section{width:min(100%,1440px);margin:auto;padding:0 48px 112px;text-align:center}
+    .whats-new-title{margin:0;font-family:Pilat,Arial,sans-serif;font-size:64px;font-weight:600;letter-spacing:-3px;line-height:1}
+    .news-card{display:grid;min-height:440px;overflow:hidden;margin-top:60px;border-radius:44px;background:var(--nero);color:var(--crema);grid-template-columns:minmax(330px,.38fr) minmax(0,.62fr);text-align:left}
+    .news-copy{display:flex;align-items:flex-start;justify-content:center;flex-direction:column;padding:52px 46px}
+    .news-kicker{margin:0 0 24px;font-size:13px;font-weight:600}
+    .news-name{margin:0;color:var(--acid);font-size:42px;font-weight:600;letter-spacing:-2px;line-height:.95;text-transform:uppercase}
+    .news-description{max-width:390px;margin:22px 0 0;color:#f1e7d1d6;font-size:16px;line-height:1.45}
+    .news-button{display:inline-flex;min-width:144px;height:50px;align-items:center;justify-content:center;margin-top:28px;border-radius:16px;background:var(--acid);color:var(--nero);font-size:15px;font-weight:600;transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease}
+    .news-button:hover{transform:translateY(-3px);box-shadow:0 13px 30px #e5ff002a}
+    .news-gallery{display:grid;min-width:0;padding:8px 8px 8px 0;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .news-gallery figure{min-width:0;overflow:hidden;margin:0;border-radius:29px;background:#292929}
+    .news-gallery img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1),filter .5s ease}
+    .news-gallery figure:nth-child(1) img{object-position:42% center}.news-gallery figure:nth-child(2) img{object-position:50% center}.news-gallery figure:nth-child(3) img{object-position:60% center}
+    .news-card:hover .news-gallery img{transform:scale(1.045);filter:saturate(1.06)}
+    .site-footer{background:var(--nero);color:#aaa292}
+    .site-footer-inner{width:min(100%,1440px);margin:auto;padding:82px 48px 30px}
+    .footer-top{display:flex;align-items:flex-start;justify-content:space-between;gap:40px}
+    .footer-headline{max-width:540px;margin:0;color:var(--crema);font-family:Pilat,Arial,sans-serif;font-size:54px;font-weight:600;letter-spacing:-2.5px;line-height:.92}
+    .footer-socials{display:flex;align-items:center;gap:12px}
+    .footer-socials a{display:flex;width:42px;height:42px;align-items:center;justify-content:center;border:1px solid #ffffff1d;border-radius:50%;color:var(--crema);font-size:18px;font-weight:600;transition:transform .25s ease,background-color .25s ease,color .25s ease}
+    .footer-socials a:hover{transform:translateY(-3px);background:var(--acid);color:var(--nero)}
+    .footer-links{display:grid;margin-top:74px;grid-template-columns:repeat(5,minmax(0,1fr));gap:38px}
+    .footer-column h3{margin:0 0 18px;color:var(--crema);font-size:13px;font-weight:600}
+    .footer-column a,.footer-column span{display:block;margin-top:11px;color:#aaa292;font-size:13px;line-height:1.25;transition:color .22s ease,transform .22s ease}
+    .footer-column a:hover{transform:translateX(3px);color:var(--acid)}
+    .footer-new{display:inline-flex!important;width:max-content;padding:3px 7px;border-radius:10px;background:#e5ff0021;color:var(--acid)!important;font-size:10px!important}
+    .footer-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-top:92px;padding-top:24px;border-top:1px solid #ffffff12}
+    .footer-copyright{margin:0;font-size:12px}
+    .footer-badges{display:flex;align-items:center;gap:7px}
+    .footer-badges span{display:flex;min-width:35px;height:24px;align-items:center;justify-content:center;padding:0 7px;border:1px solid #ffffff16;border-radius:6px;background:#ffffff0a;color:#d0c8b8;font-size:9px;font-weight:600}
+    .login-modal{position:fixed;z-index:980;inset:0;display:flex;visibility:hidden;align-items:center;justify-content:center;padding:20px;background:#0d0e0f8a;opacity:0;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:opacity .28s ease,visibility .28s ease}
+    .login-modal.is-open{visibility:visible;opacity:1}
+    .login-dialog{position:relative;width:min(540px,100%);padding:42px;border:1px solid #ffffff7a;border-radius:36px;background:var(--crema);box-shadow:0 30px 90px #0007;transform:translateY(25px) scale(.97);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+    .login-modal.is-open .login-dialog{transform:translateY(0) scale(1)}
+    .login-close{position:absolute;top:20px;right:20px;display:flex;width:40px;height:40px;align-items:center;justify-content:center;padding:0;border:0;border-radius:50%;background:#0000000a;color:var(--nero);cursor:pointer;font-size:25px}
+    .login-brand{margin:0;font-size:22px;font-weight:600;letter-spacing:-1px}
+    .login-title{margin:48px 0 0;font-family:Pilat,Arial,sans-serif;font-size:50px;font-weight:600;letter-spacing:-2.6px;line-height:.95}
+    .login-copy{margin:15px 0 27px;color:#5f594f;font-size:16px;line-height:1.4}
+    .login-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+    .login-field{display:flex;flex-direction:column;gap:8px}.login-field-full{grid-column:1/-1}.login-field label{font-size:13px;font-weight:600}
+    .login-field input{width:100%;height:55px;padding:0 16px;border:1px solid #cfc3ad;border-radius:15px;outline:none;background:#fbf3e3;color:var(--nero);font:inherit;transition:border-color .22s ease,box-shadow .22s ease}
+    .login-field input:focus{border-color:#929f42;box-shadow:0 0 0 4px #e5ff0025}.login-field input::placeholder{color:#837b6e}
+    .login-submit{width:100%;height:58px;margin-top:22px;border:0;border-radius:17px;background:var(--acid);color:var(--nero);cursor:pointer;font-size:17px;font-weight:600;transition:transform .25s ease,box-shadow .25s ease}
+    .login-submit:hover{transform:translateY(-2px);box-shadow:0 13px 28px #aabd242d}.login-submit:active{transform:scale(.985)}
+    .login-status{display:none;margin:16px 0 0;padding:13px 15px;border:1px solid #a9b83e;border-radius:13px;background:#e5ff0038;font-size:13px;line-height:1.35}
+    .login-status.is-visible{display:block;animation:hero-testo .4s ease both}
+    .login-registered-view{display:none;padding:34px 0 6px;text-align:center}.login-registered-view.is-visible{display:block;animation:hero-testo .45s ease both}.login-new-view.is-hidden{display:none}
+    .login-check{display:flex;width:68px;height:68px;align-items:center;justify-content:center;margin:0 auto 24px;border-radius:50%;background:var(--acid);font-size:31px;font-weight:600}
+    .login-registered-title{margin:0;font-family:Pilat,Arial,sans-serif;font-size:42px;font-weight:600;letter-spacing:-2px;line-height:1}.login-registered-copy{margin:16px 0 0;color:#5f594f;font-size:16px;line-height:1.45}.login-registered-name{display:block;margin-top:22px;font-size:22px;font-weight:600}.login-registered-email{display:block;margin-top:4px;color:#6e675b;font-size:14px}
+    .login-account-actions{display:grid;margin-top:30px;grid-template-columns:1fr 1fr;gap:10px}.login-account-actions button{height:52px;border:0;border-radius:15px;cursor:pointer;font-weight:600}.login-account-close{background:var(--acid)}.login-logout{background:#ded2bb;color:#3e3931}
+    .floating{position:fixed;z-index:20;bottom:16px;width:48px;height:48px;border:0;border-radius:50%;background:var(--nero);color:var(--crema);box-shadow:0 3px 18px #0005;cursor:pointer;font-weight:600;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+    .floating:hover{transform:translateY(-4px) scale(1.05)}
+    .chat{right:16px;display:flex;align-items:center;justify-content:center;font-size:0}
+    .chat-bubble-icon{position:relative;display:block;width:26px;height:22px;transform:translateY(-1px)}.chat-bubble-icon::before{position:absolute;inset:0 0 4px;border-radius:7px;background:var(--crema);content:""}.chat-bubble-icon::after{position:absolute;bottom:1px;left:7px;width:8px;height:8px;transform:skewY(-35deg);background:var(--crema);content:""}.chat-bubble-icon span{position:relative;z-index:1;display:block;padding-top:1px;color:var(--nero);font-size:11px;font-weight:900;letter-spacing:1px;line-height:16px;text-align:center}
+    .chat.is-hidden{visibility:hidden;opacity:0;transform:translateY(12px);pointer-events:none}
+    .support-panel{position:fixed;z-index:950;right:18px;bottom:18px;display:flex;width:min(420px,calc(100vw - 32px));height:min(700px,calc(100dvh - 36px));overflow:hidden;visibility:hidden;flex-direction:column;transform:translateY(28px) scale(.97);transform-origin:right bottom;border:1px solid #ffffff1b;border-radius:30px;background:#111419;color:#f4ecdc;box-shadow:0 32px 90px #0008;opacity:0;transition:opacity .32s ease,transform .42s cubic-bezier(.2,.8,.2,1),visibility .32s ease}
+    .support-panel.is-open{visibility:visible;transform:translateY(0) scale(1);opacity:1}
+    .support-hero{display:flex;min-height:288px;justify-content:space-between;flex-direction:column;padding:34px 38px 34px;background:var(--crema);color:var(--nero)}
+    .support-brand-row{display:flex;align-items:center;justify-content:space-between}
+    .support-logo{font-size:25px;font-weight:600;letter-spacing:-1px}
+    .support-close{display:flex;width:38px;height:38px;align-items:center;justify-content:center;padding:0;border:0;border-radius:50%;background:transparent;color:var(--nero);cursor:pointer;font-size:27px;line-height:1;transition:transform .25s ease,background-color .25s ease}
+    .support-close:hover{transform:rotate(8deg);background:#0000000c}
+    .support-hello{margin:0 0 8px;color:#777168;font-size:31px;font-weight:500;letter-spacing:-.7px}
+    .support-title{margin:0;font-family:Pilat,Arial,sans-serif;font-size:39px;font-weight:500;letter-spacing:-1.5px;line-height:1.02}
+    .support-body{display:flex;min-height:0;flex:1;flex-direction:column;padding:0 18px 16px;background:#111419}
+    .support-message{display:flex;min-height:56px;align-items:center;justify-content:space-between;margin-top:-28px;padding:0 20px;border:1px solid #ffffff16;border-radius:13px;background:#12161b;color:white;font-size:14px;font-weight:600;box-shadow:0 12px 30px #0006;transition:transform .25s ease,border-color .25s ease}
+    .support-message:hover{transform:translateY(-2px);border-color:#e5ff0080}
+    .support-message-label{display:flex;align-items:center;gap:11px}.support-message-label i{display:flex;width:29px;height:29px;align-items:center;justify-content:center;border-radius:9px;background:var(--acid);color:var(--nero);font-size:15px;font-style:normal}.support-message>span{color:var(--acid);font-size:23px}
+    .support-faq{margin-top:12px;padding:8px;border:1px solid #ffffff16;border-radius:15px;background:#14171c}
+    .support-search{position:relative;display:block}
+    .support-search input{width:100%;height:48px;padding:0 45px 0 13px;border:0;border-radius:10px;outline:none;background:#292d32;color:white;font:inherit;font-size:14px;font-weight:600;transition:box-shadow .25s ease}
+    .support-search input::placeholder{color:white;opacity:1}.support-search input:focus{box-shadow:0 0 0 2px var(--acid)}
+    .support-search span{position:absolute;top:50%;right:15px;transform:translateY(-50%);color:white;font-size:20px;pointer-events:none}
+    .support-faq-list{display:flex;flex-direction:column;padding:8px 5px 2px}
+    .support-faq-list a{display:flex;min-height:47px;align-items:center;justify-content:space-between;gap:12px;padding:5px 7px;color:#aaa9ad;font-size:13px;line-height:1.3;transition:color .2s ease,transform .2s ease}
+    .support-faq-label{display:flex;align-items:center;gap:10px}.support-faq-label i{display:flex;width:31px;height:31px;align-items:center;justify-content:center;flex:0 0 31px;border:1px solid #ffffff10;border-radius:9px;background:#24282d;font-size:16px;font-style:normal}
+    .support-faq-list a::after{color:white;font-size:24px;content:"›"}.support-faq-list a:hover{transform:translateX(3px);color:white}.support-faq-list a.is-filtered{display:none}
+    .support-tabs{display:grid;height:78px;border-top:1px solid #ffffff17;background:#121419;grid-template-columns:repeat(3,1fr)}
+    .support-tab{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:#98999e;font-size:12px;transition:color .22s ease,background-color .22s ease}
+    .support-tab-icon{position:relative;display:block;width:27px;height:27px;color:currentColor}
+    .support-icon-home::before{position:absolute;inset:3px 4px 2px;background:currentColor;clip-path:polygon(50% 0,100% 30%,90% 30%,90% 100%,10% 100%,10% 30%,0 30%);content:""}.support-icon-home::after{position:absolute;right:10px;bottom:3px;left:10px;height:6px;border-radius:2px 2px 0 0;background:#121419;content:""}
+    .support-icon-message::before{position:absolute;inset:4px 3px 6px;border:2px solid currentColor;border-radius:3px;content:""}.support-icon-message::after{position:absolute;right:5px;bottom:3px;width:7px;height:7px;border-right:2px solid currentColor;transform:skewY(35deg);content:""}
+    .support-icon-help{display:flex;align-items:center;justify-content:center;border:2px solid currentColor;border-radius:50%;font-size:15px;font-weight:600}
+    .support-tab.is-active,.support-tab:hover{background:#ffffff05;color:white}.support-tab.is-active{font-weight:600}
+    .support-view{display:none;min-height:0;flex:1;flex-direction:column}.support-view.is-active{display:flex}
+    .support-assistant-view{background:#121419;color:white}
+    .assistant-header{display:flex;min-height:64px;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #ffffff14;background:#121419}
+    .assistant-back,.assistant-close{display:flex;width:34px;height:34px;align-items:center;justify-content:center;flex:0 0 34px;padding:0;border:0;border-radius:50%;background:transparent;color:#a9abb0;cursor:pointer;font-size:24px}.assistant-back:hover,.assistant-close:hover{background:#ffffff0b;color:white}
+    .assistant-avatar{position:relative;width:34px;height:34px;flex:0 0 34px;border-radius:7px;background:var(--crema)}.assistant-avatar::before{position:absolute;inset:7px;border-radius:50%;background:#121419;content:""}.assistant-avatar::after{position:absolute;inset:13px;border-radius:50%;background:var(--crema);content:""}
+    .assistant-heading{min-width:0;flex:1}.assistant-heading strong,.assistant-heading span{display:block}.assistant-heading strong{overflow:hidden;color:white;font-size:14px;line-height:1.15;text-overflow:ellipsis;white-space:nowrap}.assistant-heading span{margin-top:2px;color:#aaa9ad;font-size:12px}.assistant-menu{color:#92959a;font-size:21px;letter-spacing:2px}
+    .assistant-consent{display:flex;min-height:0;flex:1;overflow:auto;flex-direction:column;padding:16px 11px 18px}
+    .assistant-notice{display:flex;gap:10px;padding:13px 14px;border:1px solid #ffffff17;border-radius:20px;color:#d5d2cb;font-size:13px;font-style:italic;line-height:1.45}.assistant-notice i{font-size:16px;font-style:normal}
+    .assistant-policy{max-width:88%;margin-top:24px;padding:14px 16px;border-radius:20px;background:#2a2d31;color:white;font-size:13px;line-height:1.45}.assistant-policy p{margin:0 0 10px}.assistant-policy p:last-child{margin-bottom:0}.assistant-policy a{text-decoration:underline;text-underline-offset:2px}
+    .assistant-signature{margin:5px 0 0;padding-left:16px;color:#8e9095;font-size:11px}
+    .assistant-consent-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:auto;padding-top:24px}.assistant-consent-actions button{height:42px;padding:0 17px;border:1px solid #ffffff0d;border-radius:22px;background:#292c30;color:white;cursor:pointer;font-size:13px;font-weight:600;transition:transform .2s ease,background-color .2s ease}.assistant-consent-actions button:hover{transform:translateY(-2px);background:#34383d}.assistant-agree{background:var(--acid)!important;color:var(--nero)!important}
+    .assistant-chat{display:none;min-height:0;flex:1;flex-direction:column}.assistant-chat.is-active{display:flex}
+    .assistant-messages{min-height:0;flex:1;overflow-y:auto;padding:18px 14px;scroll-behavior:smooth}.assistant-message{width:max-content;max-width:86%;margin-top:10px;padding:11px 13px;border-radius:17px;font-size:13px;line-height:1.42;white-space:pre-line}.assistant-message.bot{border-bottom-left-radius:5px;background:#2a2d31;color:#f3f0e8}.assistant-message.user{margin-left:auto;border-bottom-right-radius:5px;background:var(--acid);color:var(--nero)}
+    .assistant-typing{display:flex;width:52px;gap:4px}.assistant-typing span{width:6px;height:6px;border-radius:50%;background:#9a9ca1;animation:assistant-dot .8s ease-in-out infinite}.assistant-typing span:nth-child(2){animation-delay:.12s}.assistant-typing span:nth-child(3){animation-delay:.24s}
+    .assistant-quick{display:flex;overflow-x:auto;gap:7px;padding:7px 14px 11px;scrollbar-width:none}.assistant-quick::-webkit-scrollbar{display:none}.assistant-quick button{flex:0 0 auto;padding:8px 11px;border:1px solid #ffffff1c;border-radius:16px;background:#202328;color:#d9d7d1;cursor:pointer;font-size:11px;white-space:nowrap}.assistant-quick button:hover{border-color:var(--acid);color:white}
+    .assistant-composer{display:flex;align-items:flex-end;gap:8px;padding:10px 12px 12px;border-top:1px solid #ffffff14;background:#121419}.assistant-composer textarea{min-height:44px;max-height:100px;flex:1;resize:none;padding:12px 13px;border:1px solid #ffffff18;border-radius:15px;outline:none;background:#25282d;color:white;font:inherit;font-size:13px;line-height:1.35}.assistant-composer textarea:focus{border-color:var(--acid)}.assistant-send{display:flex;width:44px;height:44px;align-items:center;justify-content:center;flex:0 0 44px;border:0;border-radius:14px;background:var(--acid);color:var(--nero);cursor:pointer;font-size:20px}
+    @keyframes assistant-dot{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(-3px);opacity:1}}
+    @keyframes entra-giu{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes hero-testo{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes knob-vive{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(7deg)}}
+    @keyframes menu-overlay{from{opacity:0}to{opacity:1}}
+    @media(max-width:1100px){.booking-shell{grid-template-columns:1fr;gap:40px}.booking-title{max-width:760px}.booking-copy{max-width:680px}.news-card{grid-template-columns:minmax(300px,.42fr) minmax(0,.58fr)}.footer-links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:1023px){:root{--linea-titolo:112px}.container{padding-inline:32px}.actions{display:none}.menu{display:block}h1{font-size:56px}h2{font-size:112px}.griglia{gap-inline:24px}}
+    @media(max-width:1023px){
+      body>header nav{display:none}
+      body>header.mobile-open nav{position:fixed;z-index:701;top:76px;right:20px;left:20px;display:flex;overflow:auto;max-height:calc(100dvh - 96px);align-items:stretch;flex-direction:column;gap:0;padding:25px;transform:none;border:1px solid #ffffff91;border-radius:29px;background:linear-gradient(145deg,#f7eedee8,#e8dcc5f2);box-shadow:0 26px 70px #0004,inset 0 1px 0 #fff;-webkit-backdrop-filter:blur(24px) saturate(150%);backdrop-filter:blur(24px) saturate(150%);animation:menu-apri .42s cubic-bezier(.2,.8,.2,1) both}
+      body>header.mobile-open nav>a:not(.mobile-nav-cta):not(.mobile-nav-email){padding:13px 2px;border-bottom:1px solid #00000011;font-size:30px;font-weight:600;letter-spacing:-1.3px;line-height:1.05}
+      body>header.mobile-open nav>a:not(.mobile-nav-cta):not(.mobile-nav-email):hover{transform:translateX(5px);opacity:1}
+      .mobile-nav-separator{display:block;height:10px}
+      .mobile-nav-login{display:block!important}
+      .mobile-nav-cta{display:flex!important;height:56px;align-items:center;justify-content:center;margin-top:15px;border-radius:17px;background:var(--acid);font-size:17px!important;font-weight:600}
+      .mobile-nav-email{display:block!important;margin-top:17px;color:#5e584f;font-size:13px!important;text-align:center}
+    }
+    @media(max-width:767px){:root{--linea-titolo:.94em}.promo{height:56px}.container{padding-inline:16px}header{height:64px}nav{display:none}.logo{font-size:23px}.hero-wrap{height:480px}.hero{padding:72px 16px;border-radius:31px}.slider-dots{right:20px;bottom:18px}h1{max-width:350px;font-size:clamp(31px,9.6vw,40px);letter-spacing:-.8px}h1 span{white-space:normal}.intro{padding-top:32px;padding-bottom:64px}h2{margin-bottom:25px;font-size:clamp(58px,18vw,74px);letter-spacing:-2px;line-height:.94}.descrizione{font-size:18px}.griglia{grid-template-columns:repeat(2,1fr);font-size:18px}.ignite-section{padding:48px 16px 56px}.ignite-rays{top:-85px;width:900px}.ignite-title{font-size:clamp(50px,15vw,66px);letter-spacing:-2.5px}.ignite-subtitle{font-size:17px}.product-showcase{margin-top:42px;padding:6px 6px 28px;border-radius:32px}.product-stage{height:410px;border-radius:27px}.coapp{transform:scale(.9)}.product-showcase:hover .coapp{transform:scale(.9) translateY(-4px)}.product-details{align-items:flex-start;flex-direction:column;padding:21px 10px 0}.product-name{font-size:30px}.product-description{font-size:15px}.product-tags{padding:0}.mobile-open nav{position:absolute;z-index:10;top:60px;right:16px;left:auto;display:flex;align-items:flex-end;flex-direction:column;gap:15px;padding:20px;transform:none;border-radius:18px;background:var(--crema);box-shadow:0 10px 30px #0002;animation:menu-apri .3s cubic-bezier(.2,.8,.2,1) both}}
+    @media(max-width:767px){
+      .logo{font-size:18px;letter-spacing:-.6px}
+      .ignite-section{padding:18px 16px 58px}
+      .ignite-heading,.ignite-rays,.product-showcase{display:none}
+      .arcade-mobile-card{display:block;padding:10px 10px 28px;border-radius:38px;background:#e4dac4;text-align:left;animation:hero-testo .75s cubic-bezier(.2,.8,.2,1) both}
+      .arcade-preview{display:flex;height:430px;align-items:center;justify-content:center;border-radius:30px;background:radial-gradient(circle at 50% 43%,#ece8df 0 14%,#d5cdbd 48%,#aaa493 100%);box-shadow:inset 0 0 55px #716b5d22}
+      .arcade-window{position:relative;width:calc(100% - 42px);height:226px;overflow:hidden;border-radius:5px;background:#151515;color:#d8d8d8;box-shadow:0 24px 38px #0005;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+      .arcade-mobile-card:hover .arcade-window{transform:translateY(-5px) scale(1.015)}
+      .arcade-toolbar{display:flex;height:23px;align-items:center;gap:7px;padding:0 7px 0 25px;border-bottom:1px solid #ffffff12;background:#202020;font-size:5px}
+      .arcade-toolbar i{width:6px;height:6px;border-radius:50%;background:#555}.arcade-toolbar b{font-size:6px}.arcade-toolbar span{margin-left:auto;color:#777}
+      .arcade-sidebar{position:absolute;top:23px;bottom:0;left:0;width:21px;border-right:1px solid #ffffff12;background:#101010}
+      .arcade-sidebar::before{display:block;width:3px;height:25px;margin-top:7px;background:var(--acid);content:""}
+      .arcade-grid{display:grid;height:calc(100% - 23px);margin-left:21px;padding:9px 8px 8px;grid-template-columns:repeat(4,1fr);gap:8px}
+      .arcade-tile{min-width:0}
+      .arcade-art{display:block;height:75px;border-radius:3px;background:linear-gradient(135deg,#1f2834,#050608 70%);box-shadow:inset 0 0 18px #0004}
+      .arcade-tile:nth-child(2) .arcade-art{background:radial-gradient(circle at 50% 46%,transparent 0 23%,#6b4235 24% 26%,transparent 27%),linear-gradient(135deg,#e6a586,#e8c1ac)}
+      .arcade-tile:nth-child(3) .arcade-art{background:repeating-radial-gradient(circle,#222 0 1px,#d8d8d8 2px 6px)}
+      .arcade-tile:nth-child(4) .arcade-art{background:radial-gradient(circle,#4cff4b 0 7%,transparent 8%),conic-gradient(#6b00ff,#ff00d0,#6b00ff)}
+      .arcade-tile:nth-child(5) .arcade-art{background:linear-gradient(150deg,#0cc,#10485e 60%,#06252e)}
+      .arcade-tile:nth-child(6) .arcade-art{background:linear-gradient(135deg,#ffdf43,#b97600)}
+      .arcade-tile:nth-child(7) .arcade-art{background:radial-gradient(circle,#777,#111 65%)}
+      .arcade-tile:nth-child(8) .arcade-art{background:linear-gradient(135deg,#ff6c00,#902400)}
+      .arcade-tile b{display:block;overflow:hidden;margin-top:4px;color:#eee;font-size:5px;line-height:1;white-space:nowrap}
+      .arcade-tile small{display:block;overflow:hidden;margin-top:2px;color:#777;font-size:4px;line-height:1.2;white-space:nowrap}
+      .arcade-info{padding:29px 16px 0}
+      .arcade-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+      .arcade-eyebrow{margin:0;font-size:12px;font-weight:600;line-height:1}
+      .arcade-title{margin:3px 0 0;font-size:38px;font-weight:600;letter-spacing:-1.5px;line-height:.92}
+      .arcade-tag{flex:0 0 auto;padding:8px 13px;border-radius:22px;background:#9c978d;color:white;font-size:13px;line-height:1}
+      .arcade-description{margin:18px 0 24px;font-size:18px;line-height:1.4}
+      .arcade-explore{display:flex;width:100%;height:62px;align-items:center;justify-content:center;border-radius:20px;background:var(--acid);font-size:20px;font-weight:600;transition:transform .25s ease}
+      .arcade-explore:active{transform:scale(.98)}
+      .preloader-mosaic{width:260px;height:184px}
+      .preloader-mosaic,.preloader-final{border-radius:20px}
+      .preloader-word{font-size:36px;letter-spacing:-1.5px}
+      .action-loader-window{width:250px;height:177px;border-radius:20px}.action-loader-brand{font-size:20px}
+      .duo-section{padding:0 16px 64px}
+      .duo-grid{grid-template-columns:1fr;gap:24px}
+      .duo-card{padding:7px 7px 27px;border-radius:34px}
+      .duo-stage{height:390px;border-radius:28px}
+      .duo-arcade-ui,.duo-portal-ui{width:88%;height:62%}
+      .duo-cover{height:76px}.duo-samples{gap:8px;padding:10px 8px 7px}
+      .portal-ring{width:180px;height:180px}.portal-controls{width:78px;padding:18px 10px}.portal-knob{width:39px;height:39px;margin-bottom:23px}
+      .duo-info{padding:25px 15px 0}.duo-title{font-size:38px}.duo-description{font-size:18px}.duo-tag{padding:8px 13px;font-size:13px}
+      .duo-cta{display:flex;width:100%;height:61px;align-items:center;justify-content:center;margin-top:24px;border-radius:20px;background:var(--acid);font-size:20px;font-weight:600}
+      .booking-section{padding:0 16px 72px}
+      .booking-shell{display:block;padding:36px 20px 20px;border-radius:34px}
+      .booking-title{font-size:clamp(45px,12vw,57px);letter-spacing:-2.2px;line-height:.96}
+      .booking-copy{margin-top:23px;font-size:17px}
+      .booking-form{margin-top:34px;padding:20px;border-radius:25px}
+      .booking-form-grid,.booking-choice-grid{grid-template-columns:1fr}
+      .booking-choice span{min-height:76px}
+      .booking-submit{height:59px;border-radius:17px}
+      .whats-new-section{padding:0 16px 72px}
+      .whats-new-title{font-size:48px;letter-spacing:-2px}
+      .news-card{display:block;min-height:0;margin-top:36px;border-radius:34px}
+      .news-copy{padding:35px 26px 32px}
+      .news-kicker{margin-bottom:18px}.news-name{font-size:36px}.news-description{font-size:15px}.news-button{height:48px;margin-top:23px}
+      .news-gallery{height:285px;padding:0 7px 7px;gap:7px}
+      .news-gallery figure{border-radius:23px}
+      .site-footer-inner{padding:58px 20px 26px}
+      .footer-top{align-items:flex-start;flex-direction:column;gap:34px}
+      .footer-headline{font-size:43px;letter-spacing:-2px}
+      .footer-socials{gap:9px}.footer-socials a{width:40px;height:40px}
+      .footer-links{margin-top:58px;grid-template-columns:repeat(2,minmax(0,1fr));gap:38px 26px}
+      .footer-bottom{align-items:flex-start;flex-direction:column;margin-top:60px}
+      .footer-badges{flex-wrap:wrap}
+      .video-audio-toggle{right:13px;bottom:13px;height:44px;padding-inline:13px;border-radius:14px}
+      .login-modal{align-items:flex-end;padding:10px}
+      .login-dialog{padding:32px 22px 24px;border-radius:31px}
+      .login-title{margin-top:42px;font-size:43px}.login-copy{margin-bottom:23px}
+      .login-form-grid{grid-template-columns:1fr}.login-field-full{grid-column:auto}
+      .support-panel{right:0;bottom:0;left:0;width:100%;height:min(704px,calc(100dvh - 8px));transform:translateY(35px);transform-origin:center bottom;border-right:0;border-bottom:0;border-left:0;border-radius:28px 28px 0 0}
+      .support-panel.is-open{transform:translateY(0)}
+      .support-hero{min-height:292px;padding:34px 34px 36px}
+      .support-logo{font-size:22px}.support-hello{font-size:29px}.support-title{font-size:36px;letter-spacing:-1.3px}
+      .support-body{padding-inline:18px}.support-tabs{height:80px}
+      body>header .nav{width:calc(100% - 20px);padding-inline:14px}
+      body>header.is-liquid .nav{height:54px;margin-top:5px;border-radius:19px}
+      body.site-ready .scroll-react{transform:translateY(40px) scale(.98)}
+      body.site-ready .scroll-react.is-in-view{transform:translateY(0) scale(1)}
+      body.site-ready .scroll-react.react-card{transform:perspective(900px) translateY(40px) scale(.98)}
+      body.site-ready .scroll-react.react-card.is-in-view{transform:perspective(900px) translateY(0) scale(1)}
+    }
+    @media(hover:none){.react-card .card-media{animation:media-breathe 5.5s ease-in-out infinite alternate}}
+    @keyframes menu-apri{from{opacity:0;transform:translateY(-10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.parole{transform:translateY(calc(-1 * var(--linea-titolo)));animation:none}.slide,.reveal,h1,.hero .button,.promo,header{transition:none;animation:none}.reveal,.scroll-react{opacity:1!important;filter:none!important;transform:none!important}.slide.is-active{transform:none}}
+  </style>
+</head>
+<body class="is-loading">
+  <div class="preloader" aria-label="Caricamento del sito" aria-live="polite">
+    <div class="preloader-word" aria-hidden="true">ROMANO STUDIOS</div>
+    <div class="preloader-mosaic" aria-hidden="true">
+      <div class="preloader-track">
+        <div class="preloader-page"><img src="carmelo3.png" alt=""></div>
+        <div class="preloader-page"><img src="carmelo2.png" alt=""></div>
+        <div class="preloader-page"><img src="carmelo1.png" alt=""></div>
+      </div>
+    </div>
+    <div class="preloader-final" aria-hidden="true"><img src="carmelo1.png" alt=""></div>
+    <div class="preloader-noise" aria-hidden="true"></div>
+  </div>
+  <div class="action-loader" id="action-loader" aria-hidden="true" aria-live="polite">
+    <div class="action-loader-content">
+      <p class="action-loader-brand">ROMANO STUDIOS</p>
+      <div class="action-loader-window" aria-hidden="true">
+        <div class="action-loader-track">
+          <div class="action-loader-page"><img src="carmelo3.png" alt=""></div>
+          <div class="action-loader-page"><img src="carmelo2.png" alt=""></div>
+          <div class="action-loader-page"><img src="carmelo1.png" alt=""></div>
+        </div>
+      </div>
+      <p class="action-loader-text">Preparazione in corso…</p>
+      <div class="action-loader-progress" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="promo landing-step" style="--step-delay:0ms">
+    <a class="promo-inner" href="#lezioni-dj" aria-label="Vai alle lezioni di console DJ">
+      <span class="promo-art" aria-hidden="true"></span>
+      <span><strong>NOVITÀ: Lezioni di console DJ</strong><span>Prenota ora ›</span></span>
+    </a>
+  </div>
+
+  <header class="landing-step" style="--step-delay:110ms">
+    <div class="container nav">
+      <a class="logo" href="#" aria-label="Romano Studios, home">ROMANO STUDIOS</a>
+      <nav id="mobile-navigation" aria-label="Navigazione principale">
+        <a href="#">Home</a><a href="#artisti">Percorsi</a><a href="#whats-new-title">Novità</a><a href="#prenota">Prenota</a>
+        <a class="mobile-nav-login login-trigger" href="#login-modal">Login</a>
+        <span class="mobile-nav-separator" aria-hidden="true"></span>
+        <a class="mobile-nav-cta" href="#prenota">Prenota una lezione</a>
+        <a class="mobile-nav-email" href="mailto:carmeloputrino@icloud.com">carmeloputrino@icloud.com</a>
+      </nav>
+      <div class="actions"><a class="login login-trigger" href="#login-modal">Login</a><a class="button" href="#lezioni-dj">Esplora i servizi</a></div>
+      <button class="menu" type="button" aria-label="Apri il menu" aria-controls="mobile-navigation" aria-expanded="false"></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero-wrap">
+      <div class="hero">
+        <div class="slider" aria-hidden="true">
+          <img class="slide is-active" data-src="carmelo1.png" alt="">
+          <img class="slide" data-src="carmelo2.png" alt="">
+          <img class="slide" data-src="carmelo3.png" alt="">
+        </div>
+        <div class="slider-dots" aria-hidden="true"><span class="slider-dot is-active"></span><span class="slider-dot"></span><span class="slider-dot"></span></div>
+        <h1 class="landing-step" style="--step-delay:240ms"><span>In un mondo di</span><span>rumore, <em>crea musica</em></span><span class="accent">che abbia un</span><span class="accent">significato.</span></h1>
+        <a class="button landing-step" style="--step-delay:360ms" href="#lezioni-dj">Esplora i servizi</a>
+      </div>
+    </section>
+
+    <section class="container intro" id="artisti">
+      <h2 class="reveal landing-step" style="--step-delay:510ms" aria-label="Da artisti, per artisti">
+        <span class="parola-mobile" aria-hidden="true"><span class="parole"><span>Da</span><span>Per</span><span>Da</span></span></span>
+        <span class="artisti" aria-hidden="true">Artisti*</span>
+      </h2>
+      <p class="descrizione reveal landing-step" style="--step-delay:640ms">Our plugins aren’t born in boardrooms, they’re born in sessions. We design the tools we wish existed, then put them in your hands — the same hands that have shaped countless records you already love.</p>
+      <div class="griglia reveal landing-step" style="--step-delay:760ms" aria-label="Artisti">
+        <ul class="artist-column"><li>Rihanna</li><li>Cardi B</li><li>Coldplay</li><li>Rüfüs Du Sol</li><li>Charlie Puth</li></ul>
+        <ul class="artist-column"><li>Björk</li><li>James Blake</li><li>Beyoncé</li><li>Drake</li><li>Zedd</li></ul>
+        <ul class="artist-column"><li>Ariana Grande</li><li>Kendrick Lamar</li><li>Diplo</li><li class="artist-you">You*</li><li>Trent Reznor</li></ul>
+        <ul class="artist-column"><li>Billie Eilish</li><li>J Balvin</li><li>Finneas</li><li>Skrillex</li><li>Stargate</li></ul>
+      </div>
+    </section>
+
+    <section class="ignite-section" id="lezioni-dj" aria-labelledby="ignite-title">
+      <div class="ignite-rays" aria-hidden="true"></div>
+      <div class="ignite-heading reveal landing-step" style="--step-delay:900ms">
+        <h3 class="ignite-title" id="ignite-title"><span>Ignite your</span><span>creativity</span></h3>
+        <p class="ignite-subtitle">Explore our plugins, instruments, FX and apps</p>
+      </div>
+
+      <article class="product-showcase react-card reveal landing-step" style="--step-delay:1040ms">
+        <div class="product-stage">
+          <img class="card-media" src="dj.png" alt="Console professionale per DJ" loading="lazy">
+          <a class="ignite-explore" href="#prenota">Prenota</a>
+        </div>
+
+        <div class="product-details">
+          <div class="product-copy">
+            <p class="product-eyebrow">LEZIONI</p>
+            <h4 class="product-name">Console DJ</h4>
+            <p class="product-description">Lezioni pratiche per imparare mixaggio, selezione musicale, transizioni e utilizzo professionale della console DJ.</p>
+          </div>
+          <div class="product-tags" aria-label="Categorie"><span class="product-tag">Console &amp; Mixing</span><span class="product-tag new">In presenza</span></div>
+        </div>
+      </article>
+
+      <article class="arcade-mobile-card react-card landing-step" style="--step-delay:1040ms" aria-labelledby="arcade-title">
+        <div class="arcade-preview" aria-hidden="true">
+          <img class="card-media" src="dj.png" alt="">
+        </div>
+        <div class="arcade-info">
+          <div class="arcade-head">
+            <div><p class="arcade-eyebrow">LEZIONI</p><h3 class="arcade-title" id="arcade-title">Console DJ</h3></div>
+            <span class="arcade-tag">DJ &amp; Mixing</span>
+          </div>
+          <p class="arcade-description">Impara mixaggio, selezione musicale, transizioni e utilizzo professionale della console DJ con lezioni pratiche.</p>
+          <a class="arcade-explore" href="#prenota">Prenota</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="duo-section" aria-label="Percorsi disponibili">
+      <div class="duo-grid">
+        <article class="duo-card react-card landing-step" style="--step-delay:1160ms">
+          <div class="duo-stage" aria-hidden="true">
+            <img class="card-media" src="chitarra.png" alt="Chitarra elettrica bianca" loading="lazy">
+          </div>
+          <div class="duo-info"><div class="duo-head"><div><p class="duo-eyebrow">LEZIONI</p><h3 class="duo-title">Chitarra elettrica</h3></div><span class="duo-tag">In presenza</span></div><p class="duo-description">Dalle basi agli accordi, dalla tecnica al suono: un percorso personalizzato per imparare e migliorare con la chitarra elettrica.</p><a class="duo-cta" href="#prenota">Prenota</a></div>
+        </article>
+
+        <article class="duo-card react-card landing-step" style="--step-delay:1280ms">
+          <div class="duo-stage">
+            <video class="card-media" id="lesson-video" src="video.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Anteprima del reparto videolezioni"></video>
+            <button class="video-audio-toggle" type="button" aria-label="Attiva l'audio del video" aria-pressed="false"><span class="video-sound-icon" aria-hidden="true">🔇</span><span class="video-sound-label">Attiva audio</span></button>
+          </div>
+          <div class="duo-info"><div class="duo-head"><div><p class="duo-eyebrow">ONLINE</p><h3 class="duo-title">Videolezioni</h3></div><span class="duo-tag">Da remoto</span></div><p class="duo-description">Segui lezioni individuali online dedicate alla console DJ o alla chitarra elettrica, con spiegazioni dal vivo e supporto personalizzato.</p><a class="duo-cta" href="#prenota">Prenota</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="booking-section" id="prenota" aria-labelledby="booking-title">
+      <div class="booking-shell">
+        <div class="booking-intro">
+          <p class="booking-kicker">Lezioni personalizzate</p>
+          <h2 class="booking-title" id="booking-title">Prenota il tuo percorso.</h2>
+          <p class="booking-copy">Impara a usare la console DJ o a suonare la chitarra elettrica. Scegli una lezione in presenza oppure una videolezione.</p>
+        </div>
+
+        <form class="booking-form" id="booking-form">
+          <div class="booking-form-grid">
+            <div class="booking-field">
+              <label for="booking-name">Nome</label>
+              <input id="booking-name" name="nome" type="text" autocomplete="given-name" placeholder="Il tuo nome" required>
+            </div>
+            <div class="booking-field">
+              <label for="booking-surname">Cognome</label>
+              <input id="booking-surname" name="cognome" type="text" autocomplete="family-name" placeholder="Il tuo cognome" required>
+            </div>
+            <div class="booking-field booking-field-full">
+              <label for="booking-email">La tua email</label>
+              <input id="booking-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="nome@esempio.it" required>
+            </div>
+            <div class="booking-field booking-field-full">
+              <label for="booking-message">Messaggio <span class="booking-optional">(facoltativo)</span></label>
+              <textarea id="booking-message" name="messaggio" maxlength="600" placeholder="Scrivi una domanda, il tuo livello o quando preferisci fare lezione"></textarea>
+            </div>
+          </div>
+
+          <fieldset class="booking-options">
+            <legend>Cosa vuoi imparare?</legend>
+            <div class="booking-choice-grid">
+              <label class="booking-choice"><input type="radio" name="corso" value="Console DJ" checked><span><b>Console DJ</b><small>Mixaggio, tecnica e performance</small></span></label>
+              <label class="booking-choice"><input type="radio" name="corso" value="Chitarra elettrica"><span><b>Chitarra elettrica</b><small>Suono, tecnica e creativit&agrave;</small></span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="booking-options">
+            <legend>Come preferisci seguire?</legend>
+            <div class="booking-choice-grid">
+              <label class="booking-choice"><input type="radio" name="modalita" value="Lezione" checked><span><b>Lezione</b><small>In presenza</small></span></label>
+              <label class="booking-choice"><input type="radio" name="modalita" value="Videolezione"><span><b>Videolezione</b><small>Comodamente online</small></span></label>
+            </div>
+          </fieldset>
+
+          <button class="booking-submit" type="submit">Invia richiesta via email</button>
+          <p class="booking-status" id="booking-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="whats-new-section" aria-labelledby="whats-new-title">
+      <h2 class="whats-new-title" id="whats-new-title">What's new</h2>
+      <article class="news-card react-card">
+        <div class="news-copy">
+          <p class="news-kicker">Introducing</p>
+          <h3 class="news-name">Carmelo Sessions</h3>
+          <p class="news-description">Percorsi dedicati a console DJ, chitarra elettrica e videolezioni. Impara con un programma costruito sul tuo livello, sui tuoi obiettivi e sul tuo stile musicale.</p>
+          <a class="news-button" href="#prenota">Prenota ora</a>
+        </div>
+        <div class="news-gallery" aria-label="Carmelo Sessions">
+          <figure><img src="carmelo1.png" alt="Sessione musicale in studio" loading="lazy"></figure>
+          <figure><img src="carmelo2.png" alt="Lezione e produzione musicale" loading="lazy"></figure>
+          <figure><img src="carmelo3.png" alt="Esperienza musicale Carmelo Sessions" loading="lazy"></figure>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="footer-top">
+        <h2 class="footer-headline">Start making<br>incredible music</h2>
+        <div class="footer-socials" aria-label="Social media">
+          <a href="#" aria-label="Instagram">◎</a>
+          <a href="#" aria-label="YouTube">▶</a>
+          <a href="#" aria-label="TikTok">♪</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="X">𝕏</a>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-column">
+          <h3>Lezioni</h3>
+          <a href="#prenota">Console DJ</a>
+          <a href="#prenota">Chitarra elettrica</a>
+          <a href="#prenota">Videolezioni</a>
+        </div>
+        <div class="footer-column">
+          <h3>Percorsi</h3>
+          <a href="#prenota">Prima lezione</a>
+          <a href="#prenota">Percorso individuale</a>
+          <span class="footer-new">Nuovo</span>
+        </div>
+        <div class="footer-column">
+          <h3>Studio</h3>
+          <a href="#artisti">Chi siamo</a>
+          <a href="#artisti">Metodo</a>
+          <a href="#artisti">Attrezzatura</a>
+        </div>
+        <div class="footer-column">
+          <h3>Supporto</h3>
+          <a href="#prenota">Prenotazioni</a>
+          <a href="mailto:carmeloputrino@icloud.com">Contattaci</a>
+          <a href="mailto:carmeloputrino@icloud.com">Assistenza</a>
+        </div>
+        <div class="footer-column">
+          <h3>Contatti</h3>
+          <a href="mailto:carmeloputrino@icloud.com">carmeloputrino@icloud.com</a>
+          <a href="#">Privacy</a>
+          <a href="#">Termini di utilizzo</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2026 Carmelo Putrino. Tutti i diritti riservati.</p>
+        <div class="footer-badges" aria-label="Metodi di pagamento"><span>VISA</span><span>PayPal</span><span>MC</span><span>AMEX</span><span>EUR</span></div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="login-modal" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title" aria-hidden="true">
+    <div class="login-dialog">
+      <button class="login-close" type="button" aria-label="Chiudi Login">×</button>
+      <p class="login-brand">ROMANO STUDIOS</p>
+      <div class="login-new-view">
+        <h2 class="login-title" id="login-title">Login</h2>
+        <p class="login-copy">Inserisci i tuoi dati una sola volta. Rimarrai collegato su questo dispositivo anche dopo aver ricaricato la pagina.</p>
+        <form id="login-form">
+          <div class="login-form-grid">
+            <div class="login-field"><label for="login-name">Nome</label><input id="login-name" name="nome" type="text" autocomplete="given-name" placeholder="Il tuo nome" required></div>
+            <div class="login-field"><label for="login-surname">Cognome</label><input id="login-surname" name="cognome" type="text" autocomplete="family-name" placeholder="Il tuo cognome" required></div>
+            <div class="login-field login-field-full"><label for="login-email">Email</label><input id="login-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="nome@esempio.it" required></div>
+          </div>
+          <button class="login-submit" type="submit">Registrati e continua</button>
+          <p class="login-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="login-registered-view">
+        <span class="login-check" aria-hidden="true">✓</span>
+        <h2 class="login-registered-title">Sei già registrato</h2>
+        <p class="login-registered-copy">Il tuo accesso è salvato localmente su questo dispositivo.</p>
+        <strong class="login-registered-name"></strong><span class="login-registered-email"></span>
+        <div class="login-account-actions"><button class="login-account-close" type="button">Continua</button><button class="login-logout" type="button">Esci</button></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="support-panel" id="support-panel" aria-label="Centro assistenza" aria-hidden="true">
+    <div class="support-view support-home-view is-active">
+      <div class="support-hero">
+        <div class="support-brand-row"><span class="support-logo">ROMANO STUDIOS</span><button class="support-close" type="button" aria-label="Chiudi assistenza">×</button></div>
+        <div><p class="support-hello">Ehilà 👋</p><h2 class="support-title">Come possiamo aiutarti?</h2></div>
+      </div>
+      <div class="support-body">
+        <a class="support-message support-open-assistant" href="#assistant"><span class="support-message-label"><i aria-hidden="true">AI</i>Parla con RoSt AI</span><span aria-hidden="true">➤</span></a>
+        <div class="support-faq">
+          <label class="support-search"><input id="support-search" type="search" placeholder="Trova risposte" autocomplete="off" aria-label="Cerca nelle risposte"><span aria-hidden="true">⌕</span></label>
+          <div class="support-faq-list">
+            <a class="support-open-assistant" href="#assistant" data-assistant-question="Come prenotare una lezione?"><span class="support-faq-label"><i aria-hidden="true">📅</i>Come prenotare una lezione?</span></a>
+            <a class="support-open-assistant" href="#assistant" data-assistant-question="Cosa imparo nelle lezioni di console DJ?"><span class="support-faq-label"><i aria-hidden="true">🎛️</i>Lezioni di console DJ</span></a>
+            <a class="support-open-assistant" href="#assistant" data-assistant-question="Come sono organizzate le lezioni di chitarra elettrica?"><span class="support-faq-label"><i aria-hidden="true">🎸</i>Lezioni di chitarra elettrica</span></a>
+            <a class="support-open-assistant" href="#assistant" data-assistant-question="Come funzionano le videolezioni?"><span class="support-faq-label"><i aria-hidden="true">💻</i>Come funzionano le videolezioni?</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="support-tabs" role="navigation" aria-label="Navigazione assistenza">
+        <a class="support-tab is-active" id="support-home-tab" href="#support-home"><span class="support-tab-icon support-icon-home" aria-hidden="true"></span>Home page</a>
+        <a class="support-tab" id="support-messages-tab" href="#assistant"><span class="support-tab-icon support-icon-message" aria-hidden="true"></span>Messaggi</a>
+        <a class="support-tab action-email" href="mailto:carmeloputrino@icloud.com?subject=Richiesta%20assistenza%20dal%20sito"><span class="support-tab-icon support-icon-help" aria-hidden="true">?</span>Assistenza</a>
+      </div>
+    </div>
+
+    <div class="support-view support-assistant-view">
+      <div class="assistant-header">
+        <button class="assistant-back" type="button" aria-label="Torna alla home dell'assistenza">‹</button>
+        <span class="assistant-avatar" aria-hidden="true"></span>
+        <div class="assistant-heading"><strong>RoSt AI</strong><span>Assistente virtuale · Romano Studios</span></div>
+        <span class="assistant-menu" aria-hidden="true">•••</span>
+        <button class="assistant-close" type="button" aria-label="Chiudi assistenza">×</button>
+      </div>
+
+      <div class="assistant-consent">
+        <div class="assistant-notice"><i aria-hidden="true">ⓘ</i><span>Inviare più richieste o chat sullo stesso problema può rallentare la risposta. Invia il problema una sola volta e ti aiuteremo il più rapidamente possibile.</span></div>
+        <div class="assistant-policy">
+          <p>Contattando Romano Studios, accetti le seguenti condizioni.</p>
+          <p>I tuoi dati personali saranno usati esclusivamente per rispondere alla richiesta e fornire assistenza.</p>
+          <p>Accetti di mantenere un linguaggio rispettoso e di non utilizzare espressioni ostili o offensive.</p>
+        </div>
+        <p class="assistant-signature">RoSt AI · AI Agent · Adesso</p>
+        <div class="assistant-consent-actions"><button class="assistant-agree" type="button">Accetto</button><button class="assistant-decline" type="button">Non accetto</button></div>
+      </div>
+
+      <div class="assistant-chat">
+        <div class="assistant-messages" aria-live="polite"><div class="assistant-message bot">Ciao! 👋 Sono RoSt AI, addestrato e programmato da Federico Romano. Posso aiutarti con lezioni DJ, chitarra elettrica, videolezioni, prenotazioni, orari e molto altro. Cosa vuoi sapere?</div></div>
+        <div class="assistant-quick" aria-label="Domande rapide"><button type="button">Chi ti ha creato?</button><button type="button">Come prenoto?</button><button type="button">Lezioni DJ</button><button type="button">Chitarra elettrica</button><button type="button">Quanto costa?</button><button type="button">Videolezioni</button></div>
+        <form class="assistant-composer"><textarea id="assistant-input" rows="1" maxlength="500" placeholder="Scrivi un messaggio…" aria-label="Scrivi un messaggio"></textarea><button class="assistant-send" type="submit" aria-label="Invia messaggio">➤</button></form>
+      </div>
+    </div>
+  </aside>
+
+  <button class="floating chat" type="button" aria-label="Apri assistenza" aria-controls="support-panel" aria-expanded="false"><span class="chat-bubble-icon" aria-hidden="true"><span>•••</span></span></button>
+
+  <script>
+    const preloader = document.querySelector('.preloader');
+    const preloaderMosaic = document.querySelector('.preloader-mosaic');
+    const preloaderTrack = document.querySelector('.preloader-track');
+    const preloaderFinal = document.querySelector('.preloader-final');
+    const attendi = (ms) => new Promise((risolvi) => setTimeout(risolvi, ms));
+    const actionLoader = document.querySelector('#action-loader');
+    const actionLoaderTrack = actionLoader.querySelector('.action-loader-track');
+    const actionLoaderText = actionLoader.querySelector('.action-loader-text');
+
+    async function mostraCaricamentoAzione(testo, durata = 1800) {
+      actionLoaderText.textContent = testo;
+      actionLoaderTrack.style.animation = 'none';
+      void actionLoaderTrack.offsetWidth;
+      actionLoaderTrack.style.animation = '';
+      actionLoader.classList.add('is-visible');
+      actionLoader.setAttribute('aria-hidden', 'false');
+      await attendi(durata);
+      actionLoader.classList.remove('is-visible');
+      await attendi(280);
+      actionLoader.setAttribute('aria-hidden', 'true');
+    }
+
+    async function caricaHero() {
+      const heroSlides = [...document.querySelectorAll('.slide[data-src]')];
+      heroSlides.forEach((slide) => {
+        slide.src = slide.dataset.src;
+        slide.removeAttribute('data-src');
+      });
+      await Promise.all(heroSlides.map((slide) => {
+        if (slide.complete) return Promise.resolve();
+        return new Promise((risolvi) => {
+          slide.addEventListener('load', risolvi, { once: true });
+          slide.addEventListener('error', risolvi, { once: true });
+        });
+      }));
+      document.body.classList.add('site-ready');
+      document.dispatchEvent(new Event('landing-ready'));
+    }
+
+    async function avviaPreloader() {
+      const immagini = [...preloader.querySelectorAll('img')];
+      await Promise.all(immagini.map((immagine) => {
+        if (immagine.complete) return Promise.resolve();
+        return new Promise((risolvi) => {
+          immagine.addEventListener('load', risolvi, { once: true });
+          immagine.addEventListener('error', risolvi, { once: true });
+        });
+      }));
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        await caricaHero();
+        preloader.classList.add('is-finished');
+        document.body.classList.remove('is-loading');
+        return;
+      }
+
+      window.scrollTo(0, 0);
+      await attendi(340);
+      preloaderTrack.style.transform = 'translateY(-33.3333%)';
+      await attendi(500);
+      preloaderTrack.style.transform = 'translateY(-66.6667%)';
+      await attendi(500);
+
+      await attendi(140);
+      const partenza = preloaderMosaic.getBoundingClientRect();
+      Object.assign(preloaderFinal.style, {
+        left: `${partenza.left}px`,
+        top: `${partenza.top}px`,
+        width: `${partenza.width}px`,
+        height: `${partenza.height}px`,
+        borderRadius: getComputedStyle(preloaderMosaic).borderRadius
+      });
+      preloaderFinal.classList.add('is-visible');
+      await attendi(110);
+
+      const hero = document.querySelector('.hero');
+      preloader.classList.add('is-aligning');
+      document.body.classList.remove('is-loading');
+      await new Promise((risolvi) => requestAnimationFrame(() => requestAnimationFrame(risolvi)));
+      window.scrollTo(0, 0);
+      const arrivo = hero.getBoundingClientRect();
+      const raggio = getComputedStyle(hero).borderRadius;
+      Object.assign(preloaderFinal.style, {
+        left: `${arrivo.left}px`,
+        top: `${arrivo.top}px`,
+        width: `${arrivo.width}px`,
+        height: `${arrivo.height}px`,
+        borderRadius: raggio
+      });
+
+      await attendi(840);
+      await caricaHero();
+      preloader.classList.add('is-aligned');
+      await attendi(45);
+      preloader.classList.add('is-finished');
+      await attendi(400);
+      preloader.remove();
+    }
+
+    avviaPreloader();
+
+    const menu = document.querySelector('.menu');
+    const header = document.querySelector('header');
+    const mobileNavigation = document.querySelector('#mobile-navigation');
+    const chatButton = document.querySelector('.chat');
+    const supportPanel = document.querySelector('#support-panel');
+    const supportClose = document.querySelector('.support-close');
+    const supportSearch = document.querySelector('#support-search');
+    const supportFaqItems = [...document.querySelectorAll('.support-faq-list a')];
+    const supportAssistantLinks = [...document.querySelectorAll('.support-open-assistant')];
+    const supportHomeView = document.querySelector('.support-home-view');
+    const supportAssistantView = document.querySelector('.support-assistant-view');
+    const supportHomeTab = document.querySelector('#support-home-tab');
+    const supportMessagesTab = document.querySelector('#support-messages-tab');
+    const assistantBack = document.querySelector('.assistant-back');
+    const assistantClose = document.querySelector('.assistant-close');
+    const assistantConsent = document.querySelector('.assistant-consent');
+    const assistantAgree = document.querySelector('.assistant-agree');
+    const assistantDecline = document.querySelector('.assistant-decline');
+    const assistantChat = document.querySelector('.assistant-chat');
+    const assistantMessages = document.querySelector('.assistant-messages');
+    const assistantComposer = document.querySelector('.assistant-composer');
+    const assistantInput = document.querySelector('#assistant-input');
+    const assistantQuickButtons = [...document.querySelectorAll('.assistant-quick button')];
+    const loginModal = document.querySelector('#login-modal');
+    const loginDialog = document.querySelector('.login-dialog');
+    const loginClose = document.querySelector('.login-close');
+    const loginForm = document.querySelector('#login-form');
+    const loginStatus = document.querySelector('.login-status');
+    const loginTriggers = [...document.querySelectorAll('.login-trigger')];
+    const loginNewView = document.querySelector('.login-new-view');
+    const loginRegisteredView = document.querySelector('.login-registered-view');
+    const loginRegisteredName = document.querySelector('.login-registered-name');
+    const loginRegisteredEmail = document.querySelector('.login-registered-email');
+    const loginAccountClose = document.querySelector('.login-account-close');
+    const loginLogout = document.querySelector('.login-logout');
+
+    const chiudiMenu = () => {
+      header.classList.remove('mobile-open');
+      document.body.classList.remove('menu-open');
+      menu.setAttribute('aria-expanded', 'false');
+    };
+
+    let consensoAssistente = false;
+    let domandaAssistenteInAttesa = '';
+    try { consensoAssistente = sessionStorage.getItem('consenso-assistente') === 'si'; } catch (errore) {}
+
+    const mostraVistaSupporto = (vista) => {
+      const assistente = vista === 'assistant';
+      supportHomeView.classList.toggle('is-active', !assistente);
+      supportAssistantView.classList.toggle('is-active', assistente);
+      if (assistente) {
+        assistantConsent.style.display = consensoAssistente ? 'none' : 'flex';
+        assistantChat.classList.toggle('is-active', consensoAssistente);
+      }
+    };
+
+    const impostaSupporto = (aperto, restituisciFocus = false) => {
+      supportPanel.classList.toggle('is-open', aperto);
+      supportPanel.setAttribute('aria-hidden', String(!aperto));
+      chatButton.setAttribute('aria-expanded', String(aperto));
+      chatButton.classList.toggle('is-hidden', aperto);
+      document.body.classList.toggle('support-open', aperto);
+      if (aperto) {
+        chiudiMenu();
+        window.setTimeout(() => supportClose.focus(), 180);
+      } else if (restituisciFocus) {
+        chatButton.focus();
+      }
+    };
+
+    const leggiProfiloSalvato = () => {
+      try {
+        const valore = localStorage.getItem('profilo-output');
+        return valore ? JSON.parse(valore) : null;
+      } catch (errore) {
+        return null;
+      }
+    };
+    let profiloSalvato = leggiProfiloSalvato();
+
+    const aggiornaAccesso = () => {
+      loginTriggers.forEach((trigger) => {
+        trigger.textContent = profiloSalvato ? `Ciao, ${profiloSalvato.nome}` : 'Login';
+        trigger.setAttribute('aria-label', profiloSalvato ? `Account registrato di ${profiloSalvato.nome}` : 'Apri Login');
+      });
+      loginNewView.classList.toggle('is-hidden', Boolean(profiloSalvato));
+      loginRegisteredView.classList.toggle('is-visible', Boolean(profiloSalvato));
+      if (profiloSalvato) {
+        loginRegisteredName.textContent = `${profiloSalvato.nome} ${profiloSalvato.cognome}`;
+        loginRegisteredEmail.textContent = profiloSalvato.email;
+      }
+    };
+    aggiornaAccesso();
+
+    const impostaLogin = (aperto, restituisciFocus = false) => {
+      profiloSalvato = leggiProfiloSalvato();
+      aggiornaAccesso();
+      loginModal.classList.toggle('is-open', aperto);
+      loginModal.setAttribute('aria-hidden', String(!aperto));
+      document.body.classList.toggle('login-open', aperto);
+      if (aperto) {
+        impostaSupporto(false);
+        chiudiMenu();
+        window.setTimeout(() => (profiloSalvato ? loginAccountClose : document.querySelector('#login-name')).focus(), 180);
+      } else if (restituisciFocus && loginTriggers[0]) {
+        loginTriggers[0].focus();
+      }
+    };
+
+    menu.addEventListener('click', (evento) => {
+      evento.stopPropagation();
+      const aperto = !header.classList.contains('mobile-open');
+      if (aperto) impostaSupporto(false);
+      header.classList.toggle('mobile-open', aperto);
+      document.body.classList.toggle('menu-open', aperto);
+      menu.setAttribute('aria-expanded', String(aperto));
+    });
+
+    mobileNavigation.querySelectorAll('a').forEach((link) => link.addEventListener('click', chiudiMenu));
+    chatButton.addEventListener('click', () => {
+      impostaLogin(false);
+      mostraVistaSupporto('home');
+      impostaSupporto(true);
+    });
+    supportClose.addEventListener('click', () => impostaSupporto(false, true));
+    const apriAssistenteSupporto = async (domanda = '') => {
+      await mostraCaricamentoAzione('Avvio assistente…', 950);
+      mostraVistaSupporto('assistant');
+      if (domanda) domandaAssistenteInAttesa = domanda;
+      if (consensoAssistente) {
+        const domandaDaInviare = domandaAssistenteInAttesa;
+        domandaAssistenteInAttesa = '';
+        window.setTimeout(() => {
+          if (domandaDaInviare) inviaDomandaAssistente(domandaDaInviare);
+          else assistantInput.focus();
+        }, 120);
+      }
+    };
+    supportAssistantLinks.forEach((link) => link.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      apriAssistenteSupporto(link.dataset.assistantQuestion || '');
+    }));
+    supportMessagesTab.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      apriAssistenteSupporto();
+    });
+    supportHomeTab.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      mostraVistaSupporto('home');
+    });
+    assistantBack.addEventListener('click', () => mostraVistaSupporto('home'));
+    assistantClose.addEventListener('click', () => impostaSupporto(false, true));
+    assistantAgree.addEventListener('click', () => {
+      consensoAssistente = true;
+      try { sessionStorage.setItem('consenso-assistente', 'si'); } catch (errore) {}
+      assistantConsent.style.display = 'none';
+      assistantChat.classList.add('is-active');
+      const domandaDaInviare = domandaAssistenteInAttesa;
+      domandaAssistenteInAttesa = '';
+      window.setTimeout(() => {
+        if (domandaDaInviare) inviaDomandaAssistente(domandaDaInviare);
+        else assistantInput.focus();
+      }, 100);
+    });
+    assistantDecline.addEventListener('click', () => mostraVistaSupporto('home'));
+    document.querySelectorAll('.action-email').forEach((link) => link.addEventListener('click', async (evento) => {
+      evento.preventDefault();
+      const destinazione = link.href;
+      impostaSupporto(false);
+      await mostraCaricamentoAzione('Preparazione del messaggio…');
+      window.location.href = destinazione;
+    }));
+    loginTriggers.forEach((trigger) => trigger.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      impostaLogin(true);
+    }));
+    loginClose.addEventListener('click', () => impostaLogin(false, true));
+    loginModal.addEventListener('click', (evento) => {
+      if (evento.target === loginModal) impostaLogin(false, true);
+    });
+    loginDialog.addEventListener('click', (evento) => evento.stopPropagation());
+    document.addEventListener('click', (evento) => {
+      if (header.classList.contains('mobile-open') && !header.contains(evento.target)) chiudiMenu();
+    });
+    document.addEventListener('keydown', (evento) => {
+      if (evento.key !== 'Escape') return;
+      if (supportPanel.classList.contains('is-open')) impostaSupporto(false, true);
+      if (loginModal.classList.contains('is-open')) impostaLogin(false, true);
+      chiudiMenu();
+    });
+    supportSearch.addEventListener('input', () => {
+      const ricerca = supportSearch.value.trim().toLocaleLowerCase('it');
+      supportFaqItems.forEach((voce) => {
+        voce.classList.toggle('is-filtered', ricerca && !voce.textContent.toLocaleLowerCase('it').includes(ricerca));
+      });
+    });
+
+    const normalizzaDomanda = (testo) => testo.toLocaleLowerCase('it').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9àèéìòù\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const scegliCasuale = (risposte) => risposte[Math.floor(Math.random() * risposte.length)];
+    const presetParole = [
+      { parole: ['aiuto', 'problema', 'errore', 'bloccato'], risposte: ['Raccontami cosa non funziona e proverò a guidarti passo dopo passo.', 'Ci sono! Descrivi il problema con qualche dettaglio e cercherò la soluzione più utile.'] },
+      { parole: ['corso', 'lezione', 'imparare', 'studiare'], risposte: ['Puoi scegliere tra console DJ, chitarra elettrica e videolezioni. Dimmi cosa ti incuriosisce di più.', 'I percorsi sono personalizzati. Vuoi informazioni sulle lezioni DJ, sulla chitarra o sulla modalità online?'] },
+      { parole: ['account', 'registrato', 'profilo'], risposte: ['Il profilo viene salvato solo su questo dispositivo. Premi Login per vedere se sei già registrato o per uscire.', 'Apri Login: se hai già inserito i dati troverai il messaggio “Sei già registrato”.'] },
+      { parole: ['sito', 'pagina', 'menu', 'navigazione'], risposte: ['Posso aiutarti a trovare una sezione: corsi, prenotazione, novità, Login o assistenza.', 'Usa il menu in alto per raggiungere rapidamente Percorsi, Novità e Prenota.'] },
+      { parole: ['telefono', 'smartphone', 'mobile'], risposte: ['Il sito e la prenotazione funzionano anche da smartphone. Per le videolezioni puoi usare un telefono con connessione stabile.', 'Su mobile trovi il menu in alto e il pulsante assistenza in basso a destra.'] },
+      { parole: ['cuffie', 'cavo', 'amplificatore'], risposte: ['Dimmi quale attrezzatura possiedi: posso suggerirti cosa può essere utile per iniziare.', 'Per una risposta precisa sull’attrezzatura, indica strumento, modello e tipo di lezione.'] },
+      { parole: ['veloce', 'subito', 'urgente'], risposte: ['Per una richiesta rapida usa il modulo Prenota e specifica nel messaggio che hai urgenza.', 'Il modo più diretto è scrivere a carmeloputrino@icloud.com indicando disponibilità e corso.'] },
+      { parole: ['oggi', 'domani', 'settimana'], risposte: ['Le disponibilità cambiano: indica giorno e fascia oraria nel messaggio della prenotazione.', 'Per sapere se c’è posto oggi o domani, invia una richiesta con la fascia oraria preferita.'] },
+      { parole: ['bravo', 'bello', 'fantastico'], risposte: ['Grazie! 😊 Continuiamo: cosa vuoi sapere?', 'Mi fa piacere! Sono pronto per la prossima domanda.'] },
+      { parole: ['male', 'triste', 'stanco'], risposte: ['Mi dispiace. Possiamo procedere con calma: dimmi cosa ti serve e proverò ad aiutarti.', 'Capisco. Facciamo un passo alla volta: quale informazione stai cercando?'] },
+      { parole: ['artisti', 'rihanna', 'bjork', 'skrillex'], risposte: ['La sezione Artisti mostra alcuni nomi legati alla creatività musicale, insieme a “You*”: il prossimo artista puoi essere tu.', 'Scorri la sezione Artisti per vedere tutti i nomi e l’evidenziazione “You*”.'] },
+      { parole: ['novita', 'nuovo', 'news'], risposte: ['La sezione “What’s new” raccoglie le novità e porta direttamente alla prenotazione.', 'Trovi gli aggiornamenti nella card “What’s new” verso il fondo della pagina.'] }
+    ];
+
+    const lessicoIntenti = {
+      identita: `identita nome chiamarti chiamato chiamata presentati presentazione assistente chatbot bot intelligenza artificiale rost rostai esisti funzione ruolo personalita digitale virtuale`,
+      creatore: `creatore creato creata creatori programmato programmata programmatore sviluppato sviluppatore addestrato addestramento progettato ideato costruito autore fondatore federico romano romanostudios studio studios sito web website dominio portfolio origine paternita`,
+      saluto: `ciao salve buongiorno buonasera buonanotte ehi hey hola benvenuto benvenuta piacere eccomi pronto presente rispondi ascolti ascoltami weila ue ciaoo salveee buongiornooo`,
+      benessere: `stai stato salute bene benissimo malissimo male andamento umore giornata tutto operativa operativo funzionando forma senti sentire felice triste allegro stanco energia novita situazione procede vita`,
+      prenotazione: `prenotare prenoto prenota prenotazione prenotazioni prenotarmi iscrivere iscrizione iscrivermi riservare riserva richiesta richieste modulo confermare conferma inviare invio registrare registrazione posto posti partecipare aderire lezione lezioni corso corsi sessione sessioni`,
+      appuntamento: `appuntamento appuntamenti fissare fisso fissando calendario data date giorno giorni domani oggi settimana weekend lunedi martedi mercoledi giovedi venerdi sabato domenica incontro incontri disponibilita fascia fasce concordare agenda`,
+      dj: `dj deejay console consolle mixer mixaggio mixare mixo beatmatching transizione transizioni controller giradischi deck cue crossfader bpm tempo set playlist traccia tracce club discoteca serata performance rekordbox serato traktor cuffia piatto piatti`,
+      chitarra: `chitarra chitarre elettrica elettriche acustica corda corde plettro accordo accordi assolo riff amplificatore amplificatori pedale pedali distorsione manico tastiera pickup strumming arpeggio scale scala barre bending vibrato rock chitarrista diteggiatura`,
+      videolezione: `videolezione videolezioni video online remoto remota distanza webcam videocamera chiamata call zoom meet teams connessione internet streaming microfono telecamera schermo condividere condivisione digitale virtuale casa domicilio collegamento`,
+      prezzi: `prezzo prezzi costo costi costare costa tariffa tariffe economico economica sconto sconti offerta offerte pacchetto pacchetti budget euro totale preventivo quota rate abbonamento promozione listino conveniente`,
+      orari: `orario orari ora ore disponibilita disponibile liberi libero occupato occupata calendario mattina pomeriggio sera serale pausa frequenza settimanale mensile durata quando turni turno agenda pianificare pianificazione fascia fasce`,
+      luogo: `dove luogo luoghi sede indirizzo mappa posizione zona citta paese studio stanza sala presenza presente raggiungere parcheggio trasporto vicino lontano indicazioni strada ubicazione`,
+      durata: `durata durare dura minuti minuto ore ora tempo sessione lunga corto breve estesa singola continuativa percorso settimane mesi frequenza intervallo periodo quanto`,
+      livelli: `principiante principianti base basi iniziale iniziare inizio zero inesperto inesperta intermedio intermedi avanzato avanzati esperto esperti livello livelli esperienza capacita migliorare perfezionare professionale amatoriale preparazione`,
+      attrezzatura: `attrezzatura attrezzi strumento strumenti hardware software computer laptop pc mac windows tablet smartphone telefono cuffie cassa casse monitor scheda audio interfaccia cavo cavi jack usb adattatore amplificatore console chitarra microfono webcam supporto leggio controller`,
+      pagamento: `pagare pago pagato pagamento pagamenti carta carte credito debito paypal contanti bonifico iban fattura ricevuta transazione acconto saldo rate rateale euro valuta metodo metodi checkout sicuro addebito`,
+      cancellazione: `annullare annullo annullamento cancellare cancellazione disdire disdetta spostare sposto rimandare rinviare modifica modificare recuperare recupero assenza ritardo imprevisto rimborsare rimborso politica avvisare anticipo posticipare`,
+      eta: `eta anni bambino bambini bambina bambine ragazzo ragazzi ragazza ragazze adulto adulti adulta minorenne maggiorenne giovane anziano genitore figlio figlia adolescenti`,
+      generi: `genere generi musica musicale techno house techhouse deep minimal edm dance elettronica pop rock metal blues jazz funk soul rap trap hiphop reggaeton indie punk classica acustica progressive trance disco ambient hardstyle commerciale`,
+      contatti: `email mail contatto contatti contattare scrivere messaggio messaggi telefono numero whatsapp instagram social posta comunicare chiedere domanda informazioni info assistenza supporto risposta rispondere carmelo icloud recapito`,
+      operatore: `umano umana persona persone operatore operatori team staff collaboratore responsabile parlare conversare chiamare reale vero professionista insegnante docente maestro tutor assistente addetto`,
+      privacy: `privacy dati dato personali sicurezza sicuro consenso autorizzazione informativa termini condizioni cookie salvataggio locale dispositivo browser memoria localstorage protezione cancellazione trattamento riservato riservatezza permesso conservazione`,
+      login: `login accedere accesso account profilo registrato registrata registrazione collegato collegata entrare entrato utente credenziali nome cognome email logout uscire esci disconnettere ricordami persistente ricaricare reload sessione autenticazione`,
+      meteo: `meteo tempo piove pioggia piovera sole soleggiato nuvola nuvole nuvoloso vento ventoso caldo freddo temperatura gradi temporale neve nevica umidita clima previsioni previsione oggi domani ombrello sereno foschia grandine atmosferico`,
+      aiuto: `aiuto aiutami aiutare supporto assistenza problema problemi errore errori guasto rotto bloccato blocco funziona funzionare soluzione risolvere spiegare guida guidami istruzioni passaggi dubbio domanda difficolta emergenza`,
+      ringraziamento: `grazie ringrazio gentilissimo gentilissima gentile perfetto ottimo fantastico grande bravo brava utile chiarissimo capito risolto apprezzo meraviglioso top eccellente stupendo`,
+      commiato: `arrivederci addio presto saluti saluto buonanotte chiudo uscire fine basta grazieciao ciaociao bye goodbye congedo terminare concluso ciivediamo`,
+      sito: `sito pagina pagine menu navbar navigazione sezione sezioni home homepage footer card cards pulsante bottone link collegamento scorrere scroll mobile desktop responsive caricamento loader landing header aprire esplorare`,
+      musica: `musica musicale suonare suono ascoltare ascolto creare creativita artista artisti brano brani canzone canzoni melodia armonia ritmo produzione registrazione studio live palco concerto composizione arrangiamento`,
+      tecnico: `audio volume muto muta sentire video riprodurre player play pausa browser chrome safari firefox edge mobile desktop schermo click doppio tap animazione caricamento lento veloce bug cache aggiornare ricaricare controllo icona`,
+      scelta: `scegliere scelta consiglio consiglia consigliami preferire preferisco adatto adatta migliore differenza confronto versus entrambi quale percorso obiettivo obiettivi passione interesse indeciso indecisa orientamento`,
+      insegnante: `carmelo insegnante docente maestro tutor formatore lezione personale personalizzata esperienza metodo didattica seguire seguito spiegazione esercizi compiti allenamento pratica apprendimento`,
+      artisti: `artista artisti rihanna cardi bjork beyonce drake zedd ariana kendrick diplo trent billie balvin finneas skrillex stargate coldplay rufus charlie puth reznor grande lamar`,
+      novita: `novita nuovo nuova nuovi nuove aggiornamento aggiornamenti news recente recenti uscita presentazione whatsnew sessioni carmelo lancio scoperta contenuti prodotto prodotti futuro`
+    };
+
+    const lessicoAggiuntivo = {
+      musica: `compositore compositori compositrice arrangiatore arrangiatori spartito spartiti nota note tonalita semitono ottava intervallo intervalli solfeggio metronomo pentagramma chiave maggiore minore modulazione cadenza improvvisazione fraseggio dinamica timbro tessitura groove ritornello strofa ponte intro outro tema motivo contrappunto sincope sincopi poliritmo battuta misura misure tempoquattro quartina armonizzare trasporre trasposizione`,
+      tecnico: `latenza buffer driver firmware compatibilita installazione installare configurazione configurare impostazioni preferenze ingresso uscita segnale clipping distorsioni rumore fruscio interferenza sincronizzazione campionamento bitdepth samplerate routing canale stereo mono midi bluetooth wireless ethernet wifi banda diagnostica riavvio reinstallare permessi autorizzazioni popup finestra risoluzione fullscreen rendering codifica decodifica formato codec compressione decompressione`,
+      dj: `jogwheel fader gain equalizzatore equalizzazione loop looping hotcue sampler stem stems scratch scratching pitch pitchbend sync griglia beatgrid quantizzazione automix booth master channel phono line vinile puntina cartuccia turntablism mashup bootleg acapella instrumental drop buildup break downbeat phrasing backspin slipmode keylock mastertempo rekordbuddy waveforms cuepoint backtocue filterknob`,
+      chitarra: `capotasto paletta meccaniche tasti fret fretboard humbucker singlecoil potenziometro selettore tremolo leva action intonazione accordatura accordatore diapason muting palmute hammeron pulloff slide tapping sweep legato alternatepicking downpicking sustain feedback valvolare transistor cabinet combo delay reverb chorus flanger phaser wah compressore overdrive fuzz booster equalizer noisgate looper`,
+      videolezione: `videoconferenza auricolari illuminazione inquadratura sfondo linkinvito riunione room password audiochiamata registrabile latenzarete connettersi collegarsi disconnessione riconnessione condivisoschermo lavagna virtualboard tutorial dimostrazione diretta asincrono sincrono replay registrazionelezione promemoria invito cuffiemicrofono schermoaffiancato collegamentovideo teleassistenza videoritrovo`,
+      prezzi: `gratuito gratuita prova omaggio agevolazione coupon codicepromo promozionale deposito caparra scadenza rinnovabile rinnovo mensilita semestrale trimestrale annuale commissione imposta tasse imponibile iva fiscale intestazione pagatore beneficiario causale trasferimento ricarica prepagata wallet confermato rifiutato riuscito fallito detrazione imponibile ricevutafiscale prezzario comparazione`,
+      orari: `anticipare anticipato posticipato puntuale puntualita ritardare tardare presto prestissimo tardi tardissimo mattutino pomeridiano notturno serata feriale festivo ricorrenza bisettimanale quindicinale quotidiano alternato consecutivo sporadico regolare flessibile flessibilita preferenza coincidenza sovrapposizione slot timeslot apertura chiusura prenotabile completo esaurito reperibile calendarizzato pianificato programmabile`,
+      appuntamento: `vacante vacanti disponibilissimo disponibilissima aspettare attesa listattesa subentro rinuncia confermabile confermata sospeso sospesa rimasto rimasti rimasta capienza limite partecipanti allievi priorita assegnato assegnata prenotando prenotabile calendarizzare ricontattare richiamata convocazione convocare presenzaappuntamento assentarsi checkin`,
+      livelli: `novizio autodidatta autodidatti veterano qualificato competente inesperienza padronanza progresso progressi miglioramento risultati traguardo difficolta facile difficile complesso graduale introduttivo fondamentale approfondito intensivo accelerato collettivo teoria verifica valutazione feedback correzione ripetizione memoria coordinazione orecchio musicalita sicurezza esecuzione precisione fluidita costanza disciplina`,
+      aiuto: `malfunzionamento inconveniente anomalia eccezione avviso notifica schermatabianca schermatanera congelato crash chiusuraimprovvisa rallentamento scatto buffering caricainfinita credenzialeerrata passworddimenticata recuperopassword confermaemail linkrotto paginanontrovata offline indisponibile manutenzione disservizio segnalazione ticket pratica riferimento allegato screenshot registrazioneschermo ripristino reset tentativo procedura rimedio controlloerrore`,
+      privacy: `autenticato identificazione anagrafica accountlocale sessionelocale archiviato archiviazione sincronizzato cronologia profiloutente accessibilita cancelladati esportazione revoca minimizzazione crittografia cifratura anonimizzazione pseudonimizzazione responsabilita trasparenza finalita legalita conformita gdpr titolare interessato accessibile confidenziale consensoespresso conservazionedati eliminazioneaccount informazionipersonali trattamentoautomatizzato`,
+      contatti: `destinatario mittente oggetto corpo inoltro riscontro replica allegare documento foto registrazionevocale richiamare chiamami telegram messenger direct dm casella inbox spam indesiderata consegna recapitato ricevuto letto rispostaautomatica segreteria centralino interno estensione urgenza appuntamentotelefonico consulenza conversazione recapiti modulocontatto comunicazione richiestaemail inviomail`,
+      generi: `afrobeat amapiano dubstep drumandbass jungle garage ukgarage breakbeat electro synthwave vaporwave lofi chillout downtempo triphop grunge shoegaze postrock hardcore deathmetal blackmetal thrashmetal country folk bluegrass gospel rnb neosoul salsa bachata merengue latin cumbia dancehall dub ska orchestral cinematic soundtrack opera flamenco bossa samba swing bebop fusion`,
+      sito: `layout griglia colonna riga contenitore margine padding bordo angolo arrotondato ombra contrasto tipografia carattere font grassetto corsivo allineamento centrato laterale verticale orizzontale animato transizione effetto parallasse carosello slider galleria campo selezione dropdown textarea validazione tooltip dialog modale overlay accordion breadcrumb viewport seopage favicon metadati sezionehero`,
+      benessere: `sereno serena soddisfatto soddisfatta entusiasta motivato motivata curioso curiosa preoccupato preoccupata confuso confusa frustrato frustrata nervoso nervosa rilassato rilassata emozionato emozionata annoiato annoiata concentrato concentrata ispirato ispirata creativo creativa fiducioso fiduciosa insicuro insicura tranquillo tranquilla stressato stressata scoraggiato scoraggiata incoraggiato incoraggiata positivo positiva`,
+      matematica: `calcolo calcoli calcolare calcola matematica matematico operazione operazioni addizione addizioni somma sommare sommatoria sottrazione sottrarre differenza moltiplicazione moltiplicare prodotto divisione dividere quoziente risultato totale numero numeri cifra cifre positivo negativo decimale decimali virgola punto parentesi parentesiaperta parentesichiusa piu meno per diviso fratto uguale equazione espressione aritmetica doppio triplo meta quarto percentuale percento resto potenza elevato radice numeratore denominatore`,
+      scelta: `comodo comoda comodissimo comodissima scomodo scomoda preferibile opportuno ideale adattabile compatibile fattibile pratico praticabile vantaggio svantaggio pro contro alternativa opzione orientarsi decidere decisione valutare comparare esigenza esigenze necessita desiderio aspettativa scopo finalita indecisione orientativo suggerimento raccomandazione indicazione possibilita`,
+      luogo: `provincia regione quartiere centro periferia nord sud est ovest piano edificio ingresso portone citofono fermata autobus treno metro stazione aeroporto macchina automobile bicicletta piedi chilometri navigatore geolocalizzazione coordinate stradale raggiungibile percorsoauto percorsopedonale mezzi pubblici direzione uscita incrocio civico`,
+      attrezzatura: `alimentatore batteria pile corrente presa prolunga ciabatta supportocuffie stand flightcase custodia tracolla plettri ricambio manutenzione pulizia panno lubrificante cordeextra cavoaux cavoxlr cavomidi cavousb adattatoreusb hubusb alimentazionephantom preamplificatore convertitore alimentazioneelettrica morsetto asta aste stativo supportochitarra supportolaptop custodiaprotettiva ricambi accessorio accessori`,
+      operatore: `segreteria amministrazione amministratore tecnico tecnici consulente consulenti coordinatore coordinatrice receptionist referente contattabile telefonata colloquio orientatore specialista tutoraggio mentoring coaching centralinista incaricato incaricata supervisore supervisora collaboratrice responsabilecorso assistenzapersonale supportoumano conversazionediretta contattodiretto richiamotelefonico personalequalificato`,
+      posti: `postolibero postiliberi disponibiliposti postooccupato postioccupati pieno piena pieni piene esauriti esaurite disponibilitaresidua ultimoposto ultimiposti nessunposto capienzamassima listadiattesa listaattesa libero occupato occupati prenotati riservati disponibili rimane rimangono terminati riapertura rinuncia subentrare`,
+      preferenze_orarie: `mivienemeglio mivienepeggio vienemeglio vienepeggio primapossibile tardipomeriggio prestomattina dopo_pranzo dopoCena tardasera primaora ultimaora preferiscopresto preferiscotardi anticipareorario posticipareorario fasciapreferita orariocomodo orarioscomodo conciliabile incompatibile impegni lavoro scuola turnodilavoro flessibilitaoraria disponibilitaoraria`,
+      insegnante: `pedagogia didattico didattica tutoraggio affiancamento monitoraggio progressivo esercitazione esercitazioni materiale materiali dispensa dispense schedaesercizi pianodistudio programmadidattico obiettiviformativi competenze abilita tecnicaesecutiva ascoltoguidato correzioneindividuale supportocostante percorsoformativo`,
+      tecnologia_ai: `chatgpt openai gpt chatgptquattro modelloai modellilinguistici linguistico linguistici neurale neurali reteurale reti algoritmo algoritmi apprendimentoautomatico machinelearning deeplearning generativo generativa generazione prompt prompting conversazionale dialogico dialogare comprensionesemantica sintassi contesto contestuale memoriabreve memoriatermine token tokens tokenizer probabilita previsione predizione conoscenza dataset datiaddestramento corpus testuale linguaggionaturale nlp elaborazione inferenza parametri pesi architettura transformer attenzione embeddings vettore vettoriale classificazione regressione clustering supervisionato nonsupervisionato rinforzo agente agenti automazione automatizzare intelligente cognitivo ragionamento ragionare logica deduzione induzione analitico riassunto riassumere traduzione tradurre riscrittura correzione multimodale multimodalita parlato trascrizione riconoscimentovocale generatore assistentevirtuale robotica androide amico amicizia collega compagno collaborazione collaborare interazione interattivo tecnologia innovazione ricerca laboratorio etica affidabilita accuratezza allucinazione verificafonti citazione modelloapi integrazione sviluppocodice python database cloud personalizzazione intenti sinonimi refusi neurone computazionale computazione statistica statistico probabilistico distribuzione campionare temperatura topk topp finestracontesto sequenza sequenziale autoregressivo decodificatore codificatore encoder decoder finetuning istruzionesistema messaggioutente outputtestuale benchmark validazione testsicurezza moderazione filtro bias equita trasparente intelligenzaartificiale scienzadeidati processamentotesto rappresentazioneastratta apprendimentoprofondo riconoscimentointenti rispostacontestuale generazionetesto modelloaperto modellochiuso chatbotintelligente assistentedigitale compagnodigitale amicodigitale`
+    };
+
+    Object.entries(lessicoAggiuntivo).forEach(([intento, parole]) => {
+      lessicoIntenti[intento] = `${lessicoIntenti[intento] || ''} ${parole}`.trim();
+    });
+
+    Object.keys(lessicoIntenti).forEach((intento) => {
+      lessicoIntenti[intento] = [...new Set(lessicoIntenti[intento].split(/\s+/).filter(Boolean))];
+    });
+    const paroleConosciute = [...new Set(Object.values(lessicoIntenti).flat())];
+
+    const risposteIntenti = {
+      identita: [`Mi chiamo RoSt AI. Sono l’assistente virtuale locale di Romano Studios e ti aiuto a orientarti tra lezioni, prenotazioni e servizi.`],
+      creatore: [`Sono RoSt AI: sono stato addestrato e programmato da Federico Romano. Puoi conoscere il suo lavoro su www.romanostudios.it.`],
+      saluto: [`Ciao! Sono RoSt AI. Come posso aiutarti?`, `Ehilà! Dimmi pure cosa vuoi sapere.`],
+      benessere: [`Sto bene e sono operativo, grazie! Come posso esserti utile?`, `Tutto bene: sono pronto per le tue domande.`],
+      prenotazione: [`Per prenotare compila la sezione “Prenota il tuo percorso”, scegli corso e modalità e invia la richiesta.`],
+      appuntamento: [`Per fissare un appuntamento usa il modulo Prenota e scrivi nel messaggio facoltativo giorno e fascia oraria preferiti.`],
+      dj: [`Le lezioni DJ includono console, beatmatching, transizioni, selezione musicale e costruzione del set, con programma adatto al tuo livello.`],
+      chitarra: [`Il percorso di chitarra elettrica comprende tecnica, accordi, ritmo, suono e brani scelti insieme.`],
+      videolezione: [`Le videolezioni sono individuali e online, disponibili sia per console DJ sia per chitarra elettrica.`],
+      prezzi: [`Per conoscere il prezzo aggiornato invia una richiesta dal modulo Prenota o scrivi a carmeloputrino@icloud.com.`],
+      orari: [`Gli orari vengono concordati in base alle disponibilità. Indica nel modulo le fasce che preferisci.`],
+      luogo: [`Le lezioni possono svolgersi in presenza oppure online. L’indirizzo viene comunicato con la conferma.`],
+      durata: [`Durata e frequenza dipendono dal percorso: puoi chiedere una sessione singola o un programma continuativo.`],
+      livelli: [`I percorsi sono adatti da livello principiante ad avanzato e vengono personalizzati sugli obiettivi.`],
+      attrezzatura: [`Indica nella richiesta quali strumenti possiedi: riceverai indicazioni precise sull’attrezzatura utile.`],
+      pagamento: [`Le modalità di pagamento vengono comunicate con la conferma della prenotazione.`],
+      cancellazione: [`Per spostare o annullare scrivi appena possibile a carmeloputrino@icloud.com indicando nome e data concordata.`],
+      eta: [`I percorsi possono essere adattati a ragazzi e adulti. Inserisci l’età nel messaggio della richiesta.`],
+      generi: [`Puoi lavorare sul genere che preferisci, dalla musica elettronica al pop, rock, metal, rap e molti altri stili.`],
+      contatti: [`Puoi usare il modulo Prenota oppure scrivere direttamente a carmeloputrino@icloud.com.`],
+      operatore: [`Per parlare con una persona premi “Inviaci un messaggio” oppure scrivi a carmeloputrino@icloud.com.`],
+      privacy: [`I dati del profilo restano salvati solo localmente nel browser; l’email parte soltanto dopo la tua conferma.`],
+      login: [`Premi Login: il profilo viene conservato solo su questo dispositivo e resta disponibile dopo il ricaricamento.`],
+      meteo: [`Non posso leggere il meteo reale. Previsione creativa di RoSt AI: giornata ideale per fare musica!`],
+      aiuto: [`Descrivi cosa non funziona con qualche dettaglio e proverò a guidarti passo dopo passo.`],
+      ringraziamento: [`Di nulla! Sono qui se vuoi chiedermi altro.`],
+      commiato: [`A presto! RoSt AI sarà qui quando ne avrai bisogno.`],
+      sito: [`Nel sito trovi Percorsi, Novità, Prenota, Login e Assistenza; su mobile usa il menu in alto.`],
+      musica: [`Posso aiutarti a scegliere un percorso musicale tra console DJ, chitarra elettrica e videolezioni.`],
+      tecnico: [`Dimmi dispositivo, browser e cosa vedi sullo schermo: proverò a individuare il problema tecnico.`],
+      scelta: [`Scegli Console DJ se ami mixare; scegli Chitarra elettrica se vuoi lavorare su tecnica e suono. Entrambe sono disponibili online.`],
+      insegnante: [`Carmelo segue percorsi personalizzati di console DJ e chitarra elettrica, in presenza e online.`],
+      artisti: [`La sezione Artisti celebra la creatività e include “You*”: il prossimo artista puoi essere tu.`],
+      novita: [`Trovi gli aggiornamenti nella sezione “What’s new” verso il fondo della pagina.`],
+      matematica: [`Posso svolgere calcoli di base con addizione, sottrazione, moltiplicazione, divisione e parentesi. Per esempio: “quanto fa (12 + 8) / 4?”.`],
+      posti: [`Non posso vedere la disponibilità in tempo reale. Usa Prenota o la scheda Assistenza per chiedere quanti posti liberi sono rimasti.`],
+      preferenze_orarie: [`Dimmi se ti viene meglio presto, tardi, al mattino o alla sera: puoi inserire la preferenza nel messaggio facoltativo della prenotazione.`],
+      tecnologia_ai: [`Sì, conosco ChatGPT: lo considero una specie di amico digitale. Siamo entrambi assistenti basati sul linguaggio, ma io sono RoSt AI e sono stato programmato da Federico Romano per questo sito.`]
+    };
+
+    const distanzaParole = (prima, seconda) => {
+      const righe = Array.from({ length: seconda.length + 1 }, (_, indice) => indice);
+      for (let i = 1; i <= prima.length; i += 1) {
+        let diagonale = righe[0];
+        righe[0] = i;
+        for (let j = 1; j <= seconda.length; j += 1) {
+          const precedente = righe[j];
+          righe[j] = prima[i - 1] === seconda[j - 1] ? diagonale : Math.min(diagonale, righe[j - 1], righe[j]) + 1;
+          diagonale = precedente;
+        }
+      }
+      return righe[seconda.length];
+    };
+
+    const trovaIntentoLessicale = (domanda) => {
+      const paroleDomanda = domanda.split(' ').filter((parola) => parola.length > 2);
+      let migliore = null;
+      let punteggioMigliore = 0;
+      Object.entries(lessicoIntenti).forEach(([intento, parole]) => {
+        let punteggio = 0;
+        paroleDomanda.forEach((parolaDomanda) => {
+          if (parole.includes(parolaDomanda)) {
+            punteggio += 4;
+            return;
+          }
+          if (parolaDomanda.length >= 5 && parole.some((parola) => parola.startsWith(parolaDomanda) || parolaDomanda.startsWith(parola))) {
+            punteggio += 2;
+            return;
+          }
+          if (parolaDomanda.length >= 5 && parole.some((parola) => parola[0] === parolaDomanda[0] && Math.abs(parola.length - parolaDomanda.length) <= 1 && distanzaParole(parola, parolaDomanda) <= 1)) punteggio += 1;
+        });
+        if (punteggio > punteggioMigliore) {
+          migliore = intento;
+          punteggioMigliore = punteggio;
+        }
+      });
+      return punteggioMigliore > 0 ? migliore : null;
+    };
+
+    const calcolaEspressioneBase = (testo) => {
+      const richiestaMatematica = /\b(calcola|calcolo|quanto fa|risolvi|somma|sottrai|moltiplica|dividi|risultato)\b/i.test(testo) || /\d\s*[+\-*/x×]\s*\d/.test(testo);
+      if (!richiestaMatematica) return null;
+      let espressione = testo.toLocaleLowerCase('it').normalize('NFD').replace(/[\u0300-\u036f]/g, ' ');
+      espressione = espressione
+        .replace(/\b(sommato a|piu)\b/g, '+')
+        .replace(/\b(meno|sottratto a)\b/g, '-')
+        .replace(/\b(moltiplicato per)\b/g, '*')
+        .replace(/\bper\b/g, '*')
+        .replace(/\b(diviso per|diviso|fratto)\b/g, '/')
+        .replace(/(\d)\s*[x×]\s*(?=\d)/g, '$1*')
+        .replace(/,/g, '.')
+        .replace(/[^0-9+\-*/().\s]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (!/[+\-*/]/.test(espressione.replace(/^[+\-]/, ''))) return null;
+      const token = espressione.match(/\d+(?:\.\d+)?|[()+\-*/]/g) || [];
+      if (!token.length) return null;
+      let indice = 0;
+      const fattore = () => {
+        const valore = token[indice];
+        if (valore === '+' || valore === '-') {
+          indice += 1;
+          const numero = fattore();
+          return valore === '-' ? -numero : numero;
+        }
+        if (valore === '(') {
+          indice += 1;
+          const risultato = espressioneCompleta();
+          if (token[indice] !== ')') throw new Error('Parentesi non valida');
+          indice += 1;
+          return risultato;
+        }
+        if (!/^\d/.test(valore || '')) throw new Error('Numero non valido');
+        indice += 1;
+        return Number(valore);
+      };
+      const termine = () => {
+        let risultato = fattore();
+        while (token[indice] === '*' || token[indice] === '/') {
+          const operatore = token[indice];
+          indice += 1;
+          const numero = fattore();
+          if (operatore === '/' && numero === 0) throw new Error('Divisione per zero');
+          risultato = operatore === '*' ? risultato * numero : risultato / numero;
+        }
+        return risultato;
+      };
+      const espressioneCompleta = () => {
+        let risultato = termine();
+        while (token[indice] === '+' || token[indice] === '-') {
+          const operatore = token[indice];
+          indice += 1;
+          const numero = termine();
+          risultato = operatore === '+' ? risultato + numero : risultato - numero;
+        }
+        return risultato;
+      };
+      try {
+        const risultato = espressioneCompleta();
+        if (indice !== token.length || !Number.isFinite(risultato)) return { errore: 'Non riesco a completare questo calcolo.' };
+        return { risultato, espressione };
+      } catch (errore) {
+        return { errore: errore.message === 'Divisione per zero' ? 'Non è possibile dividere per zero.' : 'Controlla numeri, operatori e parentesi del calcolo.' };
+      }
+    };
+
+    const richiedeContattoUmano = (testo) => {
+      const domanda = normalizzaDomanda(testo);
+      return ['con chi posso parlare', 'voglio parlare con una persona', 'parlare con un operatore', 'contatto umano', 'assistenza umana', 'parlare con qualcuno'].some((frase) => domanda.includes(frase));
+    };
+
+    const rispostaAssistente = (testo) => {
+      const domanda = normalizzaDomanda(testo);
+      const contiene = (...parole) => parole.some((parola) => domanda.includes(parola));
+      if (contiene('conosci chatgpt', 'conosco chatgpt', 'conosci chat gpt', 'sai chi e chatgpt', 'chatgpt')) return 'Sì, conosco ChatGPT: lo considero una specie di amico digitale. Lui è un assistente di OpenAI; io sono RoSt AI e sono stato addestrato e programmato da Federico Romano per questo sito.';
+      if (contiene('chi ti ha creato', 'chi ti ha programmato', 'chi ti ha addestrato', 'tuo creatore', 'federico romano', 'romano studios', 'romanostudios')) return 'Sono RoSt AI: sono stato addestrato e programmato da Federico Romano. Scopri il suo lavoro su www.romanostudios.it.';
+      if (contiene('chi sei', 'come ti chiami', 'qual e il tuo nome', 'presentati')) return 'Mi chiamo RoSt AI. Sono l’assistente virtuale addestrato e programmato da Federico Romano di Romano Studios: www.romanostudios.it.';
+      if (contiene('quante parole', 'vocabolario', 'lessico', 'quanto capisci')) return `Il mio lessico locale contiene ${paroleConosciute.length} parole e varianti organizzate per argomento, oltre al riconoscimento di frasi e piccoli errori di scrittura.`;
+      const calcolo = calcolaEspressioneBase(testo);
+      if (calcolo) return calcolo.errore || `Il risultato è ${new Intl.NumberFormat('it-IT', { maximumFractionDigits: 10 }).format(calcolo.risultato)}.`;
+      if (richiedeContattoUmano(testo)) return 'Certo: ti apro l’app di posta con un messaggio già indirizzato a carmeloputrino@icloud.com. Potrai completarlo e confermare personalmente l’invio.';
+      if (contiene('ciao', 'buongiorno', 'buonasera', 'salve', 'hey', 'ehi')) return scegliCasuale(['Ciao! 👋 È un piacere sentirti. Come posso aiutarti oggi?', 'Buongiorno! Sono qui per aiutarti. Vuoi parlare di corsi o prenotazioni?', 'Ehilà! 😊 Dimmi pure cosa vuoi sapere.']);
+      if (contiene('come stai', 'come va', 'tutto bene', 'come te la passi')) return scegliCasuale(['Sto benissimo, grazie! Sono pronto ad aiutarti con lezioni e prenotazioni.', 'Tutto bene! 😊 E tu? Dimmi come posso esserti utile.', 'Va alla grande: sono operativo e pronto per le tue domande.']);
+      if (contiene('a cosa servi', 'cosa sai fare', 'cosa fai', 'come puoi aiutarmi')) return 'Sono RoSt AI. Posso spiegarti i corsi di console DJ e chitarra elettrica, le videolezioni, come prenotare, orari, livelli, attrezzatura, pagamenti e contatti.';
+      if (contiene('meteo', 'che tempo', 'tempo fa', 'piove', 'sole oggi')) return scegliCasuale(['Non posso leggere il meteo reale, ma la mia previsione creativa dice: giornata perfetta per fare musica ☀️🎵.', 'Non ho dati meteorologici in tempo reale. Previsione casuale del bot: qualche nuvola e molta voglia di suonare ☁️🎸.', 'Il meteo vero va controllato in un’app dedicata; io però voto per una giornata luminosa e un ottimo DJ set 🌤️🎛️.']);
+      if (contiene('posti liberi', 'posto libero', 'posti disponibili', 'c e posto', 'ce posto')) return 'Non posso vedere i posti in tempo reale. Per verificare se ci sono posti liberi usa Prenota oppure premi Assistenza: verrà preparata un’email con la richiesta.';
+      if (contiene('posti occupati', 'posto occupato', 'posti sono occupati', 'posti risultano occupati', 'sono tutti occupati', 'tutto pieno', 'posti esauriti')) return 'Se i posti risultano occupati puoi chiedere il primo orario disponibile o l’inserimento in lista d’attesa tramite la scheda Assistenza.';
+      if (contiene('mi viene meglio', 'mi viene peggio', 'preferisco presto', 'preferisco tardi') || ((contiene('presto', 'tardi')) && !contiene('a presto'))) return 'Va bene: gli orari vengono concordati insieme. Nel messaggio della prenotazione scrivi se ti viene meglio presto, tardi, al mattino o alla sera e indica anche quando ti viene peggio.';
+      if (contiene('prenot', 'iscriver', 'riservare', 'appuntamento', 'fissare', 'fisso una lezione')) return scegliCasuale(['Per prenotare o fissare un appuntamento vai a “Prenota il tuo percorso”, compila i dati, scegli corso e modalità e invia la richiesta.', 'Puoi fissare l’appuntamento dal modulo Prenota. Nel messaggio facoltativo indica giorno e orario preferiti.', 'Apri la sezione Prenota, scegli lezione o videolezione e invia l’email già preparata dal sito.']);
+      if (contiene('prezzo', 'costo', 'quanto costa', 'tariffa')) return 'Il prezzo dipende dal tipo di lezione e dal percorso scelto. Invia una richiesta dalla sezione Prenota oppure scrivi a carmeloputrino@icloud.com per ricevere la tariffa aggiornata.';
+      if (contiene('orario', 'orari', 'disponibil', 'quando posso')) return 'Giorni e orari vengono concordati direttamente in base alle disponibilità. Nel messaggio facoltativo puoi indicare le fasce orarie che preferisci.';
+      if (contiene('dove', 'indirizzo', 'sede', 'luogo')) return 'Le lezioni possono essere in presenza oppure online. Per conoscere indirizzo e disponibilità della sede, invia la richiesta di prenotazione via email.';
+      if (contiene('dj', 'console', 'mix', 'deejay')) return 'Le lezioni di console DJ coprono uso della console, beatmatching, transizioni, selezione musicale, gestione dei volumi e costruzione di un set. Il programma si adatta al tuo livello.';
+      if (contiene('chitarra', 'accordi', 'plettro')) return 'Il percorso di chitarra elettrica comprende impostazione, accordi, ritmo, tecnica, suono e brani scelti insieme. È adatto sia a principianti sia a chi vuole migliorare.';
+      if (contiene('videolezion', 'online', 'remoto', 'video lezione')) return 'Le videolezioni sono individuali e si svolgono online. Puoi scegliere console DJ o chitarra elettrica e ricevere spiegazioni dal vivo con supporto personalizzato.';
+      if (contiene('prova', 'prima lezione', 'lezione gratuita')) return 'Puoi richiedere una prima lezione conoscitiva. Scrivilo nel messaggio facoltativo della prenotazione e riceverai conferma via email.';
+      if (contiene('durata', 'quanto dura')) return 'La durata viene concordata in base al percorso e agli obiettivi. Puoi chiedere una sessione singola oppure un programma continuativo.';
+      if (contiene('principiante', 'livello', 'mai fatto', 'esperto', 'avanzato')) return 'Non serve esperienza: il percorso parte dal tuo livello reale, da principiante ad avanzato, e cresce con esercizi e obiettivi personalizzati.';
+      if (contiene('attrezzatura', 'strumento', 'console mia', 'chitarra mia', 'cosa devo portare')) return 'Per la prima richiesta indica cosa possiedi già. In presenza potrai ricevere indicazioni sull’attrezzatura; online è utile avere strumento, cuffie e una connessione stabile.';
+      if (contiene('connessione', 'zoom', 'meet', 'software')) return 'Per le videolezioni servono una connessione stabile, webcam o smartphone e cuffie. La piattaforma viene concordata prima della lezione.';
+      if (contiene('pagamento', 'pagare', 'carta', 'paypal', 'contanti')) return 'Le modalità di pagamento disponibili vengono comunicate nella conferma della prenotazione. Puoi chiedere una preferenza nel messaggio facoltativo.';
+      if (contiene('annull', 'cancell', 'spostare', 'rimandare')) return 'Se devi spostare o annullare una lezione, scrivi il prima possibile a carmeloputrino@icloud.com indicando nome e data concordata.';
+      if (contiene('eta', 'anni', 'bambini', 'ragazzi', 'adulti')) return 'I percorsi possono essere adattati a ragazzi e adulti. Indica l’età nella richiesta così sarà possibile consigliare il programma più adatto.';
+      if (contiene('genere', 'musica', 'techno', 'house', 'rock', 'pop', 'metal', 'rap')) return 'Il percorso può essere costruito sul genere che ami: elettronica, house, techno, pop, rock, metal, rap e altri stili. Scrivi le tue preferenze nella prenotazione.';
+      if (contiene('carmelo', 'insegnante', 'docente', 'maestro')) return 'Carmelo segue lezioni e percorsi personalizzati di console DJ e chitarra elettrica, in presenza e tramite videolezione.';
+      if (contiene('email', 'contatto', 'contattare', 'scrivere')) return 'Puoi scrivere direttamente a carmeloputrino@icloud.com oppure usare il modulo di prenotazione: il sito prepara automaticamente l’email.';
+      if (contiene('persona', 'operatore', 'umano', 'team', 'assistenza vera')) return 'Per parlare con una persona premi la scheda “Assistenza” in basso: si aprirà un’email indirizzata a carmeloputrino@icloud.com.';
+      if (contiene('privacy', 'dati', 'sicurezza')) return 'I dati inseriti servono esclusivamente a gestire login locale, richieste e prenotazioni. L’email viene inviata solo dopo la tua conferma nell’app di posta.';
+      if (contiene('login', 'accedere', 'accesso')) return 'Premi “Login” nella barra di navigazione. Dopo la registrazione resterai collegato localmente anche ricaricando la pagina; riaprendo Login vedrai “Sei già registrato”.';
+      if (contiene('audio', 'video muto', 'non sento')) return 'Il video parte senza audio. Premi il pulsante “Attiva audio” sulla card Videolezioni per ascoltarlo; puoi premerlo di nuovo per tornare in modalità silenziosa.';
+      if (contiene('grazie', 'gentile', 'perfetto')) return 'Di nulla! 😊 Sono qui se vuoi chiedermi qualcos’altro.';
+      if (contiene('arrivederci', 'a presto', 'addio', 'buonanotte')) return 'A presto! Quando vuoi, torna qui e sarò felice di aiutarti. 👋';
+      if (contiene('quale corso', 'cosa scegliere', 'consiglio')) return 'Se ami mixare e creare set, scegli Console DJ. Se vuoi suonare, lavorare su tecnica e suono, scegli Chitarra elettrica. Entrambi sono disponibili anche online.';
+      const paroleDomanda = domanda.split(' ');
+      const intentoLessicale = trovaIntentoLessicale(domanda);
+      if (intentoLessicale && risposteIntenti[intentoLessicale]) return scegliCasuale(risposteIntenti[intentoLessicale]);
+      const preset = presetParole.find((voce) => voce.parole.some((parola) => paroleDomanda.includes(parola)));
+      if (preset) return scegliCasuale(preset.risposte);
+      return scegliCasuale(['Posso aiutarti soprattutto con corsi, prenotazioni, prezzi, orari, attrezzatura e assistenza. Prova a formulare la domanda con qualche dettaglio in più.', 'Non ho capito perfettamente, ma voglio aiutarti: prova a usare parole come prenotazione, DJ, chitarra, videolezione, prezzo oppure operatore.', 'Potresti spiegarmelo in un altro modo? Associo ogni parola a un preset e con un dettaglio in più potrò scegliere la risposta migliore.']);
+    };
+
+    const aggiungiMessaggioAssistente = (testo, tipo) => {
+      const messaggio = document.createElement('div');
+      messaggio.className = `assistant-message ${tipo}`;
+      messaggio.textContent = testo;
+      assistantMessages.appendChild(messaggio);
+      assistantMessages.scrollTop = assistantMessages.scrollHeight;
+      return messaggio;
+    };
+
+    const inviaDomandaAssistente = (testo) => {
+      const domanda = testo.trim();
+      if (!domanda) return;
+      const apriEmailOperatore = richiedeContattoUmano(domanda);
+      aggiungiMessaggioAssistente(domanda, 'user');
+      const digitazione = document.createElement('div');
+      digitazione.className = 'assistant-message bot assistant-typing';
+      digitazione.innerHTML = '<span></span><span></span><span></span>';
+      assistantMessages.appendChild(digitazione);
+      assistantMessages.scrollTop = assistantMessages.scrollHeight;
+      window.setTimeout(() => {
+        digitazione.remove();
+        aggiungiMessaggioAssistente(rispostaAssistente(domanda), 'bot');
+        if (apriEmailOperatore) {
+          window.setTimeout(async () => {
+            await mostraCaricamentoAzione('Preparazione dell’email…', 900);
+            const oggetto = encodeURIComponent('Richiesta di contatto dal sito');
+            const corpo = encodeURIComponent('Ciao, vorrei parlare con una persona per ricevere assistenza.\n\nLa mia richiesta: ');
+            window.location.href = `mailto:carmeloputrino@icloud.com?subject=${oggetto}&body=${corpo}`;
+          }, 450);
+        }
+      }, 520);
+    };
+
+    assistantComposer.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      const domanda = assistantInput.value;
+      assistantInput.value = '';
+      inviaDomandaAssistente(domanda);
+    });
+    assistantQuickButtons.forEach((bottone) => bottone.addEventListener('click', () => inviaDomandaAssistente(bottone.textContent)));
+
+    loginForm.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      if (!loginForm.reportValidity()) return;
+      const dati = new FormData(loginForm);
+      const profilo = {
+        nome: String(dati.get('nome')).trim(),
+        cognome: String(dati.get('cognome')).trim(),
+        email: String(dati.get('email')).trim()
+      };
+      try {
+        localStorage.setItem('profilo-output', JSON.stringify(profilo));
+      } catch (errore) {}
+      profiloSalvato = profilo;
+      aggiornaAccesso();
+      window.setTimeout(() => loginAccountClose.focus(), 80);
+    });
+    loginAccountClose.addEventListener('click', () => impostaLogin(false, true));
+    loginLogout.addEventListener('click', () => {
+      try { localStorage.removeItem('profilo-output'); } catch (errore) {}
+      profiloSalvato = null;
+      loginForm.reset();
+      loginStatus.classList.remove('is-visible');
+      aggiornaAccesso();
+      window.setTimeout(() => document.querySelector('#login-name').focus(), 80);
+    });
+    window.addEventListener('storage', (evento) => {
+      if (evento.key !== 'profilo-output') return;
+      profiloSalvato = leggiProfiloSalvato();
+      aggiornaAccesso();
+    });
+
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      document.addEventListener('dblclick', (evento) => evento.preventDefault(), { passive: false });
+    }
+
+    const lessonVideo = document.querySelector('#lesson-video');
+    const videoAudioToggle = document.querySelector('.video-audio-toggle');
+    const videoSoundIcon = videoAudioToggle.querySelector('.video-sound-icon');
+    const videoSoundLabel = videoAudioToggle.querySelector('.video-sound-label');
+    videoAudioToggle.addEventListener('click', async () => {
+      lessonVideo.muted = !lessonVideo.muted;
+      if (!lessonVideo.muted) {
+        try { await lessonVideo.play(); } catch (errore) {}
+      }
+      const audioAttivo = !lessonVideo.muted;
+      videoAudioToggle.classList.toggle('is-audible', audioAttivo);
+      videoAudioToggle.setAttribute('aria-pressed', String(audioAttivo));
+      videoAudioToggle.setAttribute('aria-label', audioAttivo ? "Disattiva l'audio del video" : "Attiva l'audio del video");
+      videoSoundIcon.textContent = audioAttivo ? '🔊' : '🔇';
+      videoSoundLabel.textContent = audioAttivo ? 'Audio attivo' : 'Attiva audio';
+    });
+
+    let scrollHeaderPrenotato = false;
+    const aggiornaHeader = () => {
+      header.classList.toggle('is-liquid', window.scrollY > 12);
+      scrollHeaderPrenotato = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!scrollHeaderPrenotato) {
+        scrollHeaderPrenotato = true;
+        requestAnimationFrame(aggiornaHeader);
+      }
+    }, { passive: true });
+    aggiornaHeader();
+
+    const slides = [...document.querySelectorAll('.slide')];
+    const dots = [...document.querySelectorAll('.slider-dot')];
+    let slideAttiva = 0;
+    document.addEventListener('landing-ready', () => {
+      setInterval(() => {
+        const precedente = slideAttiva;
+        slideAttiva = (slideAttiva + 1) % slides.length;
+        slides.forEach((slide, indice) => {
+          slide.classList.toggle('is-active', indice === slideAttiva);
+          slide.classList.toggle('was-active', indice === precedente);
+          dots[indice].classList.toggle('is-active', indice === slideAttiva);
+        });
+      }, 4800);
+    }, { once: true });
+
+    const reactCards = [...document.querySelectorAll('.react-card')];
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      reactCards.forEach((card) => {
+        card.addEventListener('pointermove', (evento) => {
+          const rettangolo = card.getBoundingClientRect();
+          const x = (evento.clientX - rettangolo.left) / rettangolo.width;
+          const y = (evento.clientY - rettangolo.top) / rettangolo.height;
+          card.style.setProperty('--rotate-x', `${(0.5 - y) * 11}deg`);
+          card.style.setProperty('--rotate-y', `${(x - 0.5) * 13}deg`);
+          card.style.setProperty('--shine-x', `${x * 100}%`);
+          card.style.setProperty('--shine-y', `${y * 100}%`);
+          card.classList.add('is-reacting');
+        });
+        card.addEventListener('pointerleave', () => {
+          card.style.setProperty('--rotate-x', '0deg');
+          card.style.setProperty('--rotate-y', '0deg');
+          card.classList.remove('is-reacting');
+        });
+      });
+    }
+
+    const elementi = [...document.querySelectorAll('.intro h2, .intro .descrizione, .intro .griglia, .ignite-heading, .product-showcase, .arcade-mobile-card, .duo-card, .booking-intro, .booking-form, .whats-new-title, .news-card, .site-footer-inner')];
+    elementi.forEach((elemento, indice) => {
+      elemento.classList.add('scroll-react');
+      elemento.style.setProperty('--scroll-delay', `${indice * 55}ms`);
+    });
+    const osservatore = new IntersectionObserver((voci) => {
+      voci.forEach((voce) => {
+        if (voce.isIntersecting) {
+          voce.target.classList.add('is-visible', 'is-in-view');
+          osservatore.unobserve(voce.target);
+        }
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -7% 0px' });
+    elementi.forEach((elemento) => {
+      osservatore.observe(elemento);
+    });
+
+    const bookingForm = document.querySelector('#booking-form');
+    const bookingStatus = document.querySelector('#booking-status');
+    bookingForm.addEventListener('submit', async (evento) => {
+      evento.preventDefault();
+      if (!bookingForm.reportValidity()) return;
+      const dati = new FormData(bookingForm);
+      const prenotazione = {
+        nome: String(dati.get('nome')).trim(),
+        cognome: String(dati.get('cognome')).trim(),
+        email: String(dati.get('email')).trim(),
+        messaggio: String(dati.get('messaggio') || '').trim(),
+        corso: String(dati.get('corso')),
+        modalita: String(dati.get('modalita'))
+      };
+      try {
+        localStorage.setItem('ultima-prenotazione', JSON.stringify(prenotazione));
+      } catch (errore) {}
+      const destinatario = 'carmeloputrino@icloud.com';
+      const oggetto = encodeURIComponent(`Richiesta ${prenotazione.modalita}: ${prenotazione.corso}`);
+      const righeMessaggio = [
+        'Ciao Carmelo,',
+        '',
+        `sono ${prenotazione.nome} ${prenotazione.cognome}.`,
+        `La mia email è ${prenotazione.email}.`,
+        `Vorrei prenotare: ${prenotazione.modalita} di ${prenotazione.corso}.`
+      ];
+      if (prenotazione.messaggio) righeMessaggio.push('', `Messaggio: ${prenotazione.messaggio}`);
+      righeMessaggio.push('', 'Grazie.');
+      const messaggio = encodeURIComponent(righeMessaggio.join('\n'));
+      const collegamentoEmail = `mailto:${destinatario}?subject=${oggetto}&body=${messaggio}`;
+      const conferma = document.createElement('span');
+      conferma.textContent = `Perfetto ${prenotazione.nome}! Si apre la tua app email: controlla il messaggio e premi Invia. `;
+      const alternativa = document.createElement('a');
+      alternativa.href = collegamentoEmail;
+      alternativa.textContent = 'Se non si apre, clicca qui.';
+      bookingStatus.replaceChildren(conferma, alternativa);
+      bookingStatus.classList.add('is-visible');
+      await mostraCaricamentoAzione('Preparazione della prenotazione…');
+      window.location.href = collegamentoEmail;
+    });
+  </script>
+</body>
+</html>
+
